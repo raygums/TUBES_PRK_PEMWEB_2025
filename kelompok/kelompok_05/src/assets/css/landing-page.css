@@ -1,16 +1,11 @@
 /**
- * landing-page.css
- * Custom styles untuk Landing Page LampungSmart
- * Menggunakan warna resmi Provinsi Lampung
- * 
- * Dependencies: lampung-theme.css (must be loaded first)
+ * landing-page.css * 
  */
 
 /* ============================================
    STATISTICS SECTION
    ============================================ */
 .stats-section {
-    /* FIXED: Ganti gradient hijau-biru yang aneh dengan solid blue yang lebih profesional */
     background: var(--lampung-blue);
     padding: 60px 0;
     color: white;
@@ -18,7 +13,6 @@
     overflow: hidden;
 }
 
-/* Optional: Tambah subtle pattern untuk visual interest tanpa gradient yang "aneh" */
 .stats-section::before {
     content: '';
     position: absolute;

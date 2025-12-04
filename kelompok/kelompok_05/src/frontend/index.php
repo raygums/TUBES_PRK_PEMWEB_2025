@@ -1,10 +1,9 @@
 <?php
 /**
  * LampungSmart - Landing Page Publik
- * Jobdesk Anggota 4: Landing Page & Profil User
+ * Jobdesk Sulthon: Landing Page
  * 
  * Halaman ini hanya dapat diakses oleh pengunjung yang BELUM login.
- * Jika sudah login, akan diarahkan ke profile.php
  */
 
 // Start session untuk cek login status
@@ -43,7 +42,7 @@ if (isset($_SESSION['user_id'])) {
 </head>
 <body>
 
-    <!-- Navbar dengan Tema Lampung -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-lampung sticky-top">
         <div class="container">
             <a class="navbar-brand" href="index.php">
@@ -78,7 +77,7 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </nav>
 
-    <!-- Hero Section dengan Tema Lampung -->
+    <!-- Hero Section -->
     <section class="hero-lampung">
         <div class="container">
             <div class="hero-content text-center">
@@ -695,7 +694,7 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </section>
 
-    <!-- Footer dengan Tema Lampung -->
+    <!-- Footer -->
     <footer class="footer-lampung">
         <div class="container">
             <div class="row mb-4">
@@ -921,7 +920,6 @@ if (isset($_SESSION['user_id'])) {
          */
         console.log('%c🎉 Selamat Datang di LampungSmart! ', 'background: #00308F; color: #FFD700; font-size: 20px; padding: 10px;');
         console.log('%cPlatform Good Governance Digital Provinsi Lampung', 'color: #009639; font-size: 14px;');
-        console.log('%c💻 Dikembangkan dengan ❤️ untuk kemajuan Lampung', 'color: #666; font-size: 12px;');
 
         /**
          * Prevent double form submission (untuk halaman selanjutnya)

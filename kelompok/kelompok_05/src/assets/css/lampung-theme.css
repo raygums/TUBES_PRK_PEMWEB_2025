@@ -1,24 +1,15 @@
 /**
- * LampungSmart Theme - Versi 1.0 (Desember 2025)
- * Berdasarkan Logo Resmi Provinsi Lampung
+ * LampungSmart Theme
  * 
  * Tema ini menggunakan palet warna resmi logo Provinsi Lampung
  * untuk memastikan konsistensi branding di seluruh platform LampungSmart.
- * 
- * Filosofi Warna:
- * - Hijau (#009639): Kekayaan alam & pertanian Lampung
- * - Merah (#D60000): Kebijakan tegas & keberanian pemerintahan
- * - Biru (#00308F): Kepercayaan & stabilitas good governance
- * - Emas (#FFD700): Kemakmuran & energi masyarakat
- * - Putih (#FFFFFF): Transparansi & kejujuran pelayanan
- * - Charcoal (#212121): Kekuatan & keadilan hukum
  * 
  * Kompatibilitas:
  * - Bootstrap 5.3+ (via CDN)
  * - PHP 8.2+ (native)
  * - Browser: Chrome 120+, Firefox 120+, Edge 120+
  * 
- * @author Anggota 4 - LampungSmart Team
+ * @author M Sulthon Alfarizky - LampungSmart Team
  * @version 1.0.0
  * @date 2025-12-04
  */
@@ -726,7 +717,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)" /></svg>');
+    background: url('../images/hero-lampung-bg.jpg') center center / cover no-repeat;
     opacity: 0.3;
 }
 
@@ -866,12 +857,12 @@
 @media (max-width: 768px) {
     /* Navbar menjadi gradient vertikal */
     .navbar-lampung {
-        background: linear-gradient(180deg, var(--lampung-green) 0%, var(--lampung-blue) 100%);
+        background: linear-gradient(180deg, var(--lampung-blue) 0%, var(--lampung-blue-dark) 100%);
     }
     
     /* Hero section dengan background solid */
     .hero-lampung {
-        background: var(--lampung-green);
+        background: url('../images/hero-lampung-bg.jpg') center center / cover no-repeat;
         padding: 60px 0;
         min-height: auto;
     }
@@ -928,7 +919,7 @@
 }
 
 /* ========================================================================
-   16. DARK MODE SUPPORT (OPTIONAL - 2025 FEATURE)
+   16. DARK MODE SUPPORT
    ======================================================================== */
 
 /**
@@ -951,28 +942,7 @@
 }
 
 /* ========================================================================
-   17. ECO MODE - HEMAT ENERGI LAYAR OLED (2025 FEATURE)
-   ======================================================================== */
-
-/**
- * Mode hemat energi dengan warna yang lebih gelap
- * Mengurangi konsumsi baterai pada layar OLED
- */
-.theme-eco {
-    --lampung-green: #008030 !important;
-    --lampung-blue: #002070 !important;
-    --lampung-red: #B00000 !important;
-    --lampung-gold: #D4AF37 !important;
-}
-
-.theme-eco .hero-lampung,
-.theme-eco .navbar-lampung,
-.theme-eco .footer-lampung {
-    filter: brightness(0.85);
-}
-
-/* ========================================================================
-   18. ACCESSIBILITY ENHANCEMENTS
+   17. ACCESSIBILITY ENHANCEMENTS
    ======================================================================== */
 
 /**
@@ -1011,7 +981,7 @@
 }
 
 /* ========================================================================
-   19. PRINT STYLES
+   18. PRINT STYLES
    ======================================================================== */
 
 /**
@@ -1040,22 +1010,3 @@
         border: 1px solid var(--lampung-gray-300) !important;
     }
 }
-
-/* ========================================================================
-   20. CONTRAST RATIO COMPLIANCE (WCAG 2.1 AA)
-   ======================================================================== */
-
-/**
- * Semua kombinasi warna telah diuji untuk memenuhi WCAG 2.1 Level AA
- * 
- * Contrast Ratio Tests:
- * - Teks putih di biru (#FFFFFF on #00308F): 6.2:1 ✅ AAA
- * - Teks putih di hijau (#FFFFFF on #009639): 4.5:1 ✅ AA
- * - Teks putih di merah (#FFFFFF on #D60000): 5.1:1 ✅ AA
- * - Teks hitam di emas (#212121 on #FFD700): 9.8:1 ✅ AAA
- * - Teks biru di putih (#00308F on #FFFFFF): 8.7:1 ✅ AAA
- * 
- * Tool: https://webaim.org/resources/contrastchecker/
- */
-
-/* End of LampungSmart Theme CSS */
