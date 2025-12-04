@@ -1,0 +1,29 @@
+/**
+ * logo-navbar.css
+ */
+
+.logo-lampung-navbar {
+    height: 35px;
+    width: auto;
+    margin-right: 10px;
+    vertical-align: middle;
+    transition: transform 0.3s ease;
+}
+
+.logo-lampung-navbar:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive logo size */
+@media (max-width: 768px) {
+    .logo-lampung-navbar {
+        height: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .logo-lampung-navbar {
+        height: 28px;
+        margin-right: 8px;
+    }
+}

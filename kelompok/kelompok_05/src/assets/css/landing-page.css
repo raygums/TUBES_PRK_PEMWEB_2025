@@ -1,0 +1,262 @@
+/**
+ * landing-page.css * 
+ */
+
+/* ============================================
+   STATISTICS SECTION
+   ============================================ */
+.stats-section {
+    background: var(--lampung-blue);
+    padding: 60px 0;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 30px 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--lampung-gold);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.stat-label {
+    font-size: 1.1rem;
+    margin-top: 10px;
+    opacity: 0.95;
+}
+
+/* ============================================
+   ABOUT SECTION
+   ============================================ */
+.about-section {
+    padding: 80px 0;
+    background-color: var(--lampung-white);
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--lampung-blue-dark);
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(135deg, var(--lampung-blue) 0%, var(--lampung-blue-dark) 100%);
+    border-radius: 2px;
+}
+
+.section-subtitle {
+    font-size: 1.2rem;
+    color: var(--lampung-gray-600);
+    margin-bottom: 40px;
+}
+
+/* ============================================
+   PROCESS/HOW IT WORKS SECTION
+   ============================================ */
+.process-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
+    border: 2px solid var(--lampung-gray-200);
+    height: 100%;
+}
+
+.process-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--lampung-blue);
+}
+
+.process-number {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--lampung-blue) 0%, var(--lampung-blue-dark) 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 auto 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.process-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--lampung-blue-dark);
+    margin-bottom: 15px;
+}
+
+.process-description {
+    color: var(--lampung-gray-700);
+    line-height: 1.7;
+}
+
+/* ============================================
+   CTA (CALL-TO-ACTION) SECTION
+   ============================================ */
+.cta-section {
+    background: linear-gradient(135deg, var(--lampung-blue) 0%, var(--lampung-blue-dark) 100%);
+    padding: 80px 0;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)" /></svg>');
+    opacity: 0.3;
+}
+
+.cta-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* ============================================
+   BENEFITS SECTION
+   ============================================ */
+.benefit-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-md);
+    padding: 25px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all var(--transition-base);
+}
+
+.benefit-card:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateX(10px);
+}
+
+.benefit-icon {
+    font-size: 2rem;
+    color: var(--lampung-gold);
+    margin-right: 15px;
+}
+
+/* ============================================
+   TESTIMONIALS SECTION
+   ============================================ */
+.testimonial-section {
+    padding: 80px 0;
+    background: var(--lampung-gray-50);
+}
+
+.testimonial-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 35px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 30px;
+    border-left: 4px solid var(--lampung-gold);
+}
+
+.testimonial-text {
+    font-style: italic;
+    color: var(--lampung-gray-700);
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.testimonial-author {
+    font-weight: 700;
+    color: var(--lampung-blue-dark);
+    margin-bottom: 5px;
+}
+
+.testimonial-role {
+    color: var(--lampung-gray-500);
+    font-size: 0.95rem;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+    
+    .stat-label {
+        font-size: 1rem;
+    }
+    
+    .process-card {
+        margin-bottom: 20px;
+    }
+    
+    .benefit-card:hover {
+        transform: translateX(5px);
+    }
+}
+
+@media (max-width: 576px) {
+    .section-title {
+        font-size: 1.75rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1rem;
+    }
+    
+    .stats-section {
+        padding: 40px 0;
+    }
+    
+    .about-section {
+        padding: 60px 0;
+    }
+    
+    .cta-section {
+        padding: 60px 0;
+    }
+    
+    .testimonial-section {
+        padding: 60px 0;
+    }
+}
