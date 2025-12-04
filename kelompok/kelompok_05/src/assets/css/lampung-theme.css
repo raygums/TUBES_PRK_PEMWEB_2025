@@ -709,7 +709,7 @@
  * Hero Section dengan gradient Lampung
  */
 .hero-lampung {
-    background: link;
+    background: url('../images/hero-lampung-bg.jpg') center center / cover no-repeat;
     color: var(--lampung-white);
     padding: 100px 0;
     min-height: 70vh;
