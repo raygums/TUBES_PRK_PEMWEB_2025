@@ -51,43 +51,46 @@ if (isset($_POST['login'])) {
     <link rel="stylesheet" href="../../frontend/css/style.css">
 </head>
 
-<body class="d-flex align-items-center justify-content-center">
+<body class="bg-auth"> 
 
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-5 col-lg-4">
-                <div class="card card-login p-4 bg-white">
-                    <div class="card-body">
-                        <div class="text-center mb-4">
-                            <h3 class="fw-bold text-primary">SigerHub</h3>
-                            <p class="text-muted text-small">Masuk untuk melanjutkan</p>
+                <div class="card card-login p-4 p-md-5 bg-white">
+                    <div class="card-body px-0">
+                        <div class="text-center mb-5">
+                            <h3 class="fw-bold text-brand-primary">LampungSmart</h3>
+                            <p class="text-muted">Masuk untuk mengakses layanan</p>
                         </div>
 
                         <?php if($error): ?>
-                            <div class="alert alert-danger py-2 text-center text-small">
-                                <?php echo $error; ?>
+                            <div class="alert alert-danger py-2 text-center mb-4">
+                                <small><?php echo $error; ?></small>
                             </div>
                         <?php endif; ?>
 
                         <form action="" method="POST">
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Email Address</label>
-                                <input type="email" name="email" class="form-control" placeholder="nama@email.com" required>
+                            <div class="mb-4">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" name="email" class="form-control fw-medium" placeholder="nama@email.com" required>
                             </div>
                             
                             <div class="mb-4">
-                                <label class="form-label fw-semibold">Password</label>
-                                <input type="password" name="password" class="form-control" placeholder="******" required>
+                                <div class="d-flex justify-content-between">
+                                    <label class="form-label">Password</label>
+                                    <a href="#" class="text-decoration-none text-muted text-small" style="font-size: 0.9rem;">Lupa password?</a>
+                                </div>
+                                <input type="password" name="password" class="form-control fw-medium" placeholder="••••••" required>
                             </div>
 
-                            <div class="d-grid mb-3">
-                                <button type="submit" name="login" class="btn btn-primary btn-block">MASUK SEKARANG</button>
+                            <div class="d-grid mb-4">
+                                <button type="submit" name="login" class="btn btn-brand-yellow btn-lg">MASUK SEKARANG</button>
                             </div>
                         </form>
 
-                        <div class="text-center mt-3">
+                        <div class="text-center mt-4">
                             <span class="text-muted">Belum punya akun?</span>
-                            <a href="register.php" class="text-decoration-none fw-bold">Daftar Warga</a>
+                            <a href="register.php" class="link-brand ms-1">Daftar Warga</a>
                         </div>
                     </div>
                 </div>
