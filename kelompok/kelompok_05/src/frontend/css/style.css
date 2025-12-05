@@ -1,38 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 /* =========================================
    1. GLOBAL STYLES
    ========================================= */
+:root {
+    --brand-dark-blue: #0d1b3e; /* Warna Biru Gelap LampungSmart */
+    --brand-yellow: #ffc107;    /* Warna Kuning Aksen */
+    --brand-yellow-hover: #e0a800;
+}
+
 body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa; /* Warna dasar dashboard */
+    font-family: 'Poppins', sans-serif; /* Menggunakan Font Poppins */
+    background-color: #f8f9fa;
     min-height: 100vh;
+    color: #333;
+}
+
+/* Utility Classes untuk Warna Brand */
+.text-brand-primary {
+    color: var(--brand-dark-blue) !important;
+}
+
+.btn-brand-yellow {
+    background-color: var(--brand-yellow);
+    color: var(--brand-dark-blue);
+    font-weight: 600;
+    border: none;
+    padding: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-brand-yellow:hover {
+    background-color: var(--brand-yellow-hover);
+    color: var(--brand-dark-blue);
+    transform: translateY(-2px); /* Efek naik sedikit saat di-hover */
+}
+
+.link-brand {
+    color: var(--brand-dark-blue);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.link-brand:hover {
+    color: var(--brand-yellow-hover);
+    text-decoration: underline;
 }
 
 /* =========================================
    2. AUTH PAGES (LOGIN & REGISTER)
    ========================================= */
-/* Background khusus halaman Login (Biru Gradasi) */
-body.bg-login {
-    background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+/* Background untuk halaman Auth (Biru Gelap Solid) */
+body.bg-auth {
+    background-color: var(--brand-dark-blue);
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 20px; /* Padding agar tidak mentok di layar HP */
 }
 
-/* Background khusus halaman Register (Hijau Gradasi) */
-body.bg-register {
-    background: linear-gradient(135deg, #198754 0%, #20c997 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Kartu Login/Register yang melayang */
+/* Kartu Login/Register */
 .card-login {
     border: none;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    border-radius: 20px; /* Sudut lebih membulat */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2); /* Bayangan lebih lembut */
     background-color: white;
+    overflow: hidden; /* Agar sudut tumpul bekerja sempurna */
 }
+
+.form-label {
+    font-weight: 500;
+    color: var(--brand-dark-blue);
+}
+
+.form-control {
+    padding: 12px; /* Input lebih tinggi agar lega */
+    border-radius: 10px;
+    border: 1px solid #dde2e5;
+}
+
+.form-control:focus {
+    border-color: var(--brand-yellow);
+    box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+}
+
 
 /* =========================================
    3. DASHBOARD & SIDEBAR LAYOUT
@@ -40,27 +92,31 @@ body.bg-register {
 /* Sidebar Kiri */
 .sidebar { 
     min-height: 100vh; 
-    background-color: #343a40; 
+    
+    /* GANTI BAGIAN INI */
+    background-color: var(--brand-dark-blue); 
+    
     color: white; 
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
 
 /* Link Menu Sidebar */
 .sidebar a { 
-    color: #cfd2d6; 
+    color: rgba(255, 255, 255, 0.7); /* Putih agak transparan biar rapi */
     text-decoration: none; 
     display: block; 
     padding: 12px 20px; 
     transition: all 0.3s;
     border-left: 4px solid transparent;
+    font-weight: 500;
 }
 
 /* Efek Hover Menu */
 .sidebar a:hover, 
 .sidebar a.active { 
-    background-color: #495057; 
-    color: white; 
-    border-left: 4px solid #0d6efd; 
+    background-color: rgba(255, 255, 255, 0.1); /* Efek terang saat disorot */
+    color: var(--brand-yellow); /* Teks jadi kuning */
+    border-left: 4px solid var(--brand-yellow); 
 }
 
 /* Ikon Menu */
@@ -75,11 +131,12 @@ body.bg-register {
 /* Kartu Statistik Dashboard */
 .card-dashboard {
     border: none;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    transition: transform 0.2s;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card-dashboard:hover {
-    transform: translateY(-5px); /* Efek naik dikit pas di-hover */
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
