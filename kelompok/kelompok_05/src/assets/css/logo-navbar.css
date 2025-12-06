@@ -27,3 +27,37 @@
         margin-right: 8px;
     }
 }
+
+/* Sidebar Logo Styles */
+.logo-lampung-sidebar {
+    height: 40px;
+    width: auto;
+    margin-right: 8px;
+    vertical-align: middle;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.sidebar-logo-link {
+    transition: all 0.3s ease;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.sidebar-logo-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-logo-link:hover .logo-lampung-sidebar {
+    transform: scale(1.1) rotate(5deg);
+    filter: brightness(1.2);
+}
+
+.sidebar-logo-link:active .logo-lampung-sidebar {
+    transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+    .logo-lampung-sidebar {
+        height: 35px;
+    }
+}
