@@ -5,9 +5,10 @@ $role = $_SESSION['role'] ?? 'guest';
 <div class="sidebar p-3 d-flex flex-column" style="width: 260px; min-height: 100vh;">
     
     <div class="text-center mt-3 mb-5">
-        <h4 class="fw-bold text-white tracking-wide">
-            <i class="fas fa-map-marker-alt text-warning me-2"></i>Lampung<span class="text-warning">Smart</span>
-        </h4>
+        <a href="../backend/dashboard_warga.php" class="text-decoration-none d-flex align-items-center justify-content-center sidebar-logo-link">
+            <img src="../assets/images/logo-lampung.png" alt="Logo Lampung" class="logo-lampung-sidebar"> 
+            <span class="text-white fw-bold fs-5 ms-2">Lampung<span class="text-warning">Smart</span></span>
+        </a>
     </div>
     
     <ul class="nav flex-column gap-2">
