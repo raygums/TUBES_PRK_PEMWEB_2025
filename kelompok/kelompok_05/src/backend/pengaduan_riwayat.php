@@ -620,8 +620,29 @@ function get_status_badge($status) {
     
     <?php include 'layout/footer.html'; ?>
     
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
-        // Fungsi fungsi bakalan ada disini ntar
+        // Toggle tanggapan section
+        function toggleTanggapan(button) {
+            const card = button.closest('.pengaduan-card');
+            const tanggapanSection = card.querySelector('.tanggapan-section');
+            
+            if (tanggapanSection) {
+                tanggapanSection.classList.toggle('show');
+                button.style.backgroundColor = tanggapanSection.classList.contains('show') 
+                    ? '#002060' 
+                    : 'var(--lampung-blue)';
+            }
+        }
+        
+        // Show detail (bisa di-extend ke modal atau halaman detail)
+        function showDetail(id) {
+            // TODO: Bisa membuka modal atau redirect ke halaman detail
+            console.log('Show detail pengaduan:', id);
+            alert('Fitur detail akan segera hadir!');
+        }
     </script>
 </body>
 
