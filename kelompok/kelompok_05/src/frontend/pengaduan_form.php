@@ -149,38 +149,184 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- LampungSmart Theme -->
     <link href="../../assets/css/lampung-theme.css" rel="stylesheet">
 </head>
-<body>  
-    <div class="container">
-        <h2>Form Pengaduan</h2>
-        
-        <?php if ($success_message): ?>
-            <div class="alert success"><?php echo $success_message; ?></div>
-        <?php endif; ?>
-        
-        <?php if ($error_message): ?>
-            <div class="alert error"><?php echo $error_message; ?></div>
-        <?php endif; ?>
-        
-        <form action="" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="judul">Judul Pengaduan:</label>
-                <input type="text" id="judul" name="judul" value="<?php echo htmlspecialchars($judul ?? ''); ?>" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="deskripsi">Deskripsi:</label>
-                <textarea id="deskripsi" name="deskripsi" rows="5" required><?php echo htmlspecialchars($deskripsi ?? ''); ?></textarea>
-            </div>
-            <div class="form-group">
-                <label for="lokasi">Lokasi:</label>
-                <input type="text" id="lokasi" name="lokasi" value="<?php echo htmlspecialchars($lokasi ?? ''); ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="foto">Foto (opsional):</label>
-                <input type="file" id="foto" name="foto" accept="image/*">
-            </div>
-            <button type="submit">Kirim Pengaduan</button>
-        </form>
+<body>
+        <?php include 'layout/header.html'; ?>
+    
+    <!-- HERO SECTION -->
+    <div class="hero-pengaduan">
+        <div class="hero-content">
+            <i class="fas fa-megaphone hero-icon"></i>
+            <h1>Ajukan Pengaduan Anda</h1>
+            <p>Sampaikan masalah atau saran kepada pemerintah Provinsi Lampung. Suara Anda penting untuk kami!</p>
+        </div>
     </div>
+    
+    <!-- MAIN CONTAINER -->
+    <div class="container-pengaduan">
+        
+        <!-- Alert Success -->
+        <?php if (!empty($success_message)): ?>
+            <div class="alert-success-custom">
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <strong>Pengaduan Berhasil Diajukan!</strong>
+                    <p style="margin: 5px 0 0 0; font-size: 0.9rem;"><?php echo htmlspecialchars($success_message); ?></p>
+                </div>
+            </div>
+        <?php endif; ?>
+        
+        <!-- Alert Error -->
+        <?php if (!empty($error_message)): ?>
+            <div class="alert-danger-custom">
+                <i class="fas fa-exclamation-circle"></i>
+                <div>
+                    <strong>Terjadi Kesalahan!</strong>
+                    <p style="margin: 5px 0 0 0; font-size: 0.9rem;"><?php echo $error_message; ?></p>
+                </div>
+            </div>
+        <?php endif; ?>
+        
+        <!-- FORM CARD -->
+        <div class="card-pengaduan">
+            <form method="POST" enctype="multipart/form-data" novalidate id="formPengaduan">
+                <div style="padding: 35px;">
+                    
+                    <!-- Input Judul -->
+                    <div class="form-group-custom">
+                        <label for="judul">
+                            Judul Pengaduan
+                            <span class="required-star">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            class="form-control-custom" 
+                            id="judul" 
+                            name="judul" 
+                            placeholder="Contoh: Jalan Rusak di Jl. Imam Bonjol"
+                            value="<?php echo htmlspecialchars($judul ?? ''); ?>"
+                            minlength="5"
+                            maxlength="100"
+                            required>
+                        <div class="char-count-container">
+                            <div class="char-count">
+                                <span id="judulCount">0</span>/100
+                            </div>
+                            <div class="char-count-bar">
+                                <div class="char-count-bar-fill" id="judulBar"></div>
+                            </div>
+                        </div>
+                        <small class="form-text-custom">
+                            <i class="fas fa-lightbulb"></i> Judul yang ringkas dan jelas membantu admin memahami masalah Anda
+                        </small>
+                    </div>
+                    
+                    <!-- Input Deskripsi -->
+                    <div class="form-group-custom">
+                        <label for="deskripsi">
+                            Deskripsi Lengkap
+                            <span class="required-star">*</span>
+                        </label>
+                        <textarea 
+                            class="form-control-custom" 
+                            id="deskripsi" 
+                            name="deskripsi" 
+                            placeholder="Jelaskan detail masalah Anda secara lengkap... Apa yang terjadi? Sejak kapan? Siapa yang terlibat?"
+                            minlength="10"
+                            maxlength="5000"
+                            required><?php echo htmlspecialchars($deskripsi ?? ''); ?></textarea>
+                        <div class="char-count-container">
+                            <div class="char-count" id="deskripsiCountLabel">
+                                <span id="deskripsiCount">0</span>/5000
+                            </div>
+                            <div class="char-count-bar">
+                                <div class="char-count-bar-fill" id="deskripsiBar"></div>
+                            </div>
+                        </div>
+                        <small class="form-text-custom">
+                            <i class="fas fa-info-circle"></i> Semakin detail, semakin cepat kami memproses laporan Anda
+                        </small>
+                    </div>
+                    
+                    <!-- Input Lokasi -->
+                    <div class="form-group-custom">
+                        <label for="lokasi">
+                            Lokasi Kejadian
+                            <span class="required-star">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            class="form-control-custom" 
+                            id="lokasi" 
+                            name="lokasi" 
+                            placeholder="Contoh: Jl. Imam Bonjol, Kelurahan Penengahan, Bandar Lampung"
+                            value="<?php echo htmlspecialchars($lokasi ?? ''); ?>"
+                            minlength="5"
+                            maxlength="255"
+                            required>
+                        <small class="form-text-custom">
+                            <i class="fas fa-map-marker-alt"></i> Lokasi spesifik membantu kami merespons lebih cepat
+                        </small>
+                    </div>
+                    
+                    <!-- Input Foto -->
+                    <div class="form-group-custom">
+                        <label for="foto">
+                            Foto Pendukung
+                            <span style="color: #999; font-weight: 400;">(Opsional)</span>
+                        </label>
+                        <div class="file-input-wrapper">
+                            <label for="foto" class="file-input-label">
+                                <i class="fas fa-cloud-upload-alt file-input-icon"></i>
+                                <span>Klik untuk upload atau drag & drop</span>
+                                <small>JPG, PNG, GIF | Max 5MB</small>
+                            </label>
+                            <input 
+                                type="file" 
+                                id="foto" 
+                                name="foto" 
+                                accept="image/jpeg,image/png,image/gif">
+                        </div>
+                        <div id="fotoInfo"></div>
+                    </div>
+                    
+                    <!-- Button Group -->
+                    <div class="button-group">
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-paper-plane"></i> Ajukan Pengaduan
+                        </button>
+                        <button type="reset" class="btn-reset">
+                            <i class="fas fa-redo"></i> Bersihkan
+                        </button>
+                    </div>
+                    
+                </div>
+            </form>
+        </div>
+        
+        <!-- INFO BOX -->
+        <div class="info-box">
+            <h5>
+                <i class="fas fa-clock"></i>
+                Informasi Proses Pengaduan
+            </h5>
+            <ul>
+                <li><strong>Verifikasi:</strong> Pengaduan Anda akan diverifikasi oleh admin dalam 1x24 jam kerja</li>
+                <li><strong>Tracking:</strong> Pantau status pengaduan melalui halaman "Riwayat Pengaduan"</li>
+                <li><strong>Tanggapan:</strong> Anda akan mendapat balasan untuk setiap pengaduan yang diajukan</li>
+                <li><strong>Rahasia:</strong> Data dan privasi Anda dijaga dengan aman</li>
+            </ul>
+        </div>
+        
+    </div>
+    
+    <?php include 'layout/footer.html'; ?>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+     <script>
+        
+     </script>
 </body>
 </html>
