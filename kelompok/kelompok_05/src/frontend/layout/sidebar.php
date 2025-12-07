@@ -43,6 +43,14 @@ $role = $_SESSION['role'] ?? 'guest';
                     <i class="fas fa-file-contract me-3"></i> Status Izin
                 </a>
             </li>
+            
+            <li class="nav-header text-uppercase text-white-50 fs-7 fw-bold mt-3 mb-2 px-3" style="font-size: 0.75rem;">Akun</li>
+            
+            <li class="nav-item">
+                <a href="../frontend/profile.php" class="nav-link d-flex align-items-center <?php echo basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'active' : ''; ?>">
+                    <i class="fas fa-user-circle me-3"></i> Profil Saya
+                </a>
+            </li>
         
         <?php elseif ($role == 'admin'): ?>
             <li class="nav-header text-uppercase text-white-50 fs-7 fw-bold mt-3 mb-2 px-3" style="font-size: 0.75rem;">Panel Admin</li>
@@ -67,7 +75,7 @@ $role = $_SESSION['role'] ?? 'guest';
 
     <div class="mt-auto mb-4">
         <hr class="border-secondary opacity-50">
-        <a href="../backend/logout.php" class="nav-link text-danger d-flex align-items-center fw-bold" onclick="return confirm('Yakin mau keluar?')">
+        <a href="../backend/auth/logout.php" class="nav-link text-danger d-flex align-items-center fw-bold" onclick="return confirm('Yakin mau keluar?')">
             <i class="fas fa-sign-out-alt me-3"></i> Logout
         </a>
     </div>
