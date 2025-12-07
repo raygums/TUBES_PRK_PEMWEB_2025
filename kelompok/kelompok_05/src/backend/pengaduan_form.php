@@ -15,6 +15,11 @@ if ($_SESSION['role'] !== 'warga') {
     exit;
 }
 
+// Generate CSRF Token
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 // Koneksi database
 require_once '../backend/config.php';
 
@@ -22,109 +27,221 @@ require_once '../backend/config.php';
 $success_message = '';
 $error_message = '';
 
+// Rate limiting: cek pengaduan terakhir (max 1 pengaduan per 5 menit per user)
+$rate_limit_key = 'pengaduan_last_submit_' . $_SESSION['user_id'];
+$last_submit = isset($_SESSION[$rate_limit_key]) ? $_SESSION[$rate_limit_key] : 0;
+$current_time = time();
+$rate_limit_seconds = 300; // Atur ke 5 menit
+
 // Proses form submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Sanitasi input
-    $judul = trim($_POST['judul'] ?? '');
-    $deskripsi = trim($_POST['deskripsi'] ?? '');
-    $lokasi = trim($_POST['lokasi'] ?? '');
-    
-    // Array untuk menyimpan error validasi
-    $errors = [];
-    
-    // Validasi judul
-    if (empty($judul)) {
-        $errors[] = "Judul pengaduan tidak boleh kosong";
-    } elseif (strlen($judul) < 5) {
-        $errors[] = "Judul minimal 5 karakter";
-    } elseif (strlen($judul) > 100) {
-        $errors[] = "Judul maksimal 100 karakter";
+    // CSRF TOKEN VALIDATION 
+    if (empty($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die('⚠️ CSRF Token validation failed. Request rejected for security reasons.');
     }
     
-    // Validasi deskripsi
-    if (empty($deskripsi)) {
-        $errors[] = "Deskripsi tidak boleh kosong";
-    } elseif (strlen($deskripsi) < 10) {
-        $errors[] = "Deskripsi minimal 10 karakter";
-    } elseif (strlen($deskripsi) > 5000) {
-        $errors[] = "Deskripsi maksimal 5000 karakter";
-    }
-    
-    // Validasi lokasi
-    if (empty($lokasi)) {
-        $errors[] = "Lokasi tidak boleh kosong";
-    } elseif (strlen($lokasi) < 5) {
-        $errors[] = "Lokasi minimal 5 karakter";
-    } elseif (strlen($lokasi) > 255) {
-        $errors[] = "Lokasi maksimal 255 karakter";
-    }
-    
-    // Proses upload foto (opsional)
-    $foto_path = null;
-    if (isset($_FILES['foto']) && $_FILES['foto']['size'] > 0) {
-        $foto = $_FILES['foto'];
-        $file_size = $foto['size'];
-        $file_tmp = $foto['tmp_name'];
-        $file_name = $foto['name'];
-        
-        // Validasi tipe file
-        $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
-        $file_type = mime_content_type($file_tmp);
-        
-        if (!in_array($file_type, $allowed_types)) {
-            $errors[] = "Tipe file harus JPG, PNG, atau GIF";
-        }
-        
-        // Validasi ukuran file (max 5MB)
-        if ($file_size > 5 * 1024 * 1024) {
-            $errors[] = "Ukuran file maksimal 5MB";
-        }
-        
-        // Jika validasi lolos, upload file
-        if (empty($errors)) {
-            $upload_dir = '../../uploads/pengaduan/';
-            
-            // Buat folder jika belum ada
-            if (!is_dir($upload_dir)) {
-                mkdir($upload_dir, 0755, true);
-            }
-            
-            // Generate nama file unik
-            $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
-            $new_file_name = 'pengaduan_' . $_SESSION['user_id'] . '_' . time() . '.' . $file_ext;
-            $foto_path = $new_file_name;
-            
-            if (!move_uploaded_file($file_tmp, $upload_dir . $new_file_name)) {
-                $errors[] = "Gagal upload foto";
-            }
-        }
-    }
-    
-    // Jika tidak ada error, simpan ke database
-    if (empty($errors)) {
-        try {
-            $query = "INSERT INTO pengaduan (user_id, judul, deskripsi, lokasi, foto, status) 
-                      VALUES (?, ?, ?, ?, ?, 'pending')";
-            
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param('issss', $_SESSION['user_id'], $judul, $deskripsi, $lokasi, $foto_path);
-            
-            if ($stmt->execute()) {
-                $success_message = "Pengaduan berhasil diajukan! Nomor ID: " . $stmt->insert_id;
-                // Reset form
-                $judul = $deskripsi = $lokasi = '';
-                $_FILES = [];
-            } else {
-                $errors[] = "Error database: " . $stmt->error;
-            }
-            
-            $stmt->close();
-        } catch (Exception $e) {
-            $errors[] = "Terjadi kesalahan: " . $e->getMessage();
-        }
+    // RATE LIMITING
+    if ($current_time - $last_submit < $rate_limit_seconds) {
+        $error_message = "Mohon tunggu " . ($rate_limit_seconds - ($current_time - $last_submit)) . " detik sebelum mengajukan pengaduan berikutnya.";
     } else {
-        // Jika ada error, tampilkan semua error
-        $error_message = implode('<br>', $errors);
+        // Sanitasi input
+        $judul = trim($_POST['judul'] ?? '');
+        $deskripsi = trim($_POST['deskripsi'] ?? '');
+        $lokasi = trim($_POST['lokasi'] ?? '');
+        
+        // Array untuk menyimpan error validasi
+        $errors = [];
+        
+        // VALIDATION: JUDUL
+        if (empty($judul)) {
+            $errors[] = "Judul pengaduan tidak boleh kosong";
+        } elseif (strlen($judul) < 5) {
+            $errors[] = "Judul minimal 5 karakter";
+        } elseif (strlen($judul) > 100) {
+            $errors[] = "Judul maksimal 100 karakter";
+        }
+        // Cek karakter berbahaya dalam judul
+        if (preg_match('/[<>\"\'%;()&+]/i', $judul)) {
+            $errors[] = "Judul mengandung karakter yang tidak diizinkan";
+        }
+        
+        //  VALIDATION: DESKRIPSI 
+        if (empty($deskripsi)) {
+            $errors[] = "Deskripsi tidak boleh kosong";
+        } elseif (strlen($deskripsi) < 10) {
+            $errors[] = "Deskripsi minimal 10 karakter";
+        } elseif (strlen($deskripsi) > 5000) {
+            $errors[] = "Deskripsi maksimal 5000 karakter";
+        }
+        // Cek karakter berbahaya dalam deskripsi (tapi allow newline)
+        if (preg_match('/<script|<iframe|<object|onclick|onerror|onload/i', $deskripsi)) {
+            $errors[] = "Deskripsi mengandung kode berbahaya";
+        }
+        
+        //  VALIDATION: LOKASI 
+        if (empty($lokasi)) {
+            $errors[] = "Lokasi tidak boleh kosong";
+        } elseif (strlen($lokasi) < 5) {
+            $errors[] = "Lokasi minimal 5 karakter";
+        } elseif (strlen($lokasi) > 255) {
+            $errors[] = "Lokasi maksimal 255 karakter";
+        }
+        
+        //  SECURITY: FILE UPLOAD VALIDATION 
+        $foto_path = null;
+        if (isset($_FILES['foto']) && $_FILES['foto']['size'] > 0) {
+            $foto = $_FILES['foto'];
+            $file_size = $foto['size'];
+            $file_tmp = $foto['tmp_name'];
+            $file_name = $foto['name'];
+            $file_error = $foto['error'];
+            
+            // Cek upload error
+            if ($file_error !== UPLOAD_ERR_OK) {
+                switch ($file_error) {
+                    case UPLOAD_ERR_INI_SIZE:
+                        $errors[] = "File terlalu besar (melebihi upload_max_filesize)";
+                        break;
+                    case UPLOAD_ERR_FORM_SIZE:
+                        $errors[] = "File terlalu besar (melebihi MAX_FILE_SIZE form)";
+                        break;
+                    case UPLOAD_ERR_PARTIAL:
+                        $errors[] = "File hanya terupload sebagian";
+                        break;
+                    case UPLOAD_ERR_NO_FILE:
+                        $errors[] = "Tidak ada file yang dipilih";
+                        break;
+                    default:
+                        $errors[] = "Upload error tidak diketahui";
+                }
+            }
+            
+            // Validasi ukuran file (max 5MB)
+            if ($file_size > 5 * 1024 * 1024) {
+                $errors[] = "Ukuran file maksimal 5MB";
+            }
+            
+            // STRICT FILE TYPE VALIDATION 
+            // Whitelist tipe file yang diizinkan
+            $allowed_mimes = [
+                'image/jpeg' => 'jpg',
+                'image/png' => 'png',
+                'image/gif' => 'gif'
+            ];
+            
+            // Gunakan finfo_file (lebih secure)
+            if (function_exists('finfo_file')) {
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $file_type = finfo_file($finfo, $file_tmp);
+                finfo_close($finfo);
+            } else {
+                // Fallback: cek magic bytes (file signature)
+                $file_type = $this->getMimeTypeByMagicBytes($file_tmp);
+            }
+            
+            if (!in_array($file_type, array_keys($allowed_mimes))) {
+                $errors[] = "Tipe file harus JPG, PNG, atau GIF (MIME: " . htmlspecialchars($file_type) . ")";
+            }
+            
+            // CEK MAGIC BYTES / FILE SIGNATURE
+            // Cek file header untuk pastikan benar-benar image
+            $file_header = fread(fopen($file_tmp, 'rb'), 12);
+            
+            // JPEG signature
+            $is_jpeg = (bin2hex(substr($file_header, 0, 3)) === 'ffd8ff');
+            // PNG signature
+            $is_png = (bin2hex(substr($file_header, 0, 8)) === '89504e470d0a1a0a');
+            // GIF signature
+            $is_gif = (substr($file_header, 0, 3) === 'GIF');
+            
+            if (!($is_jpeg || $is_png || $is_gif)) {
+                $errors[] = "File signature tidak valid. Pastikan file benar-benar gambar.";
+            }
+            
+            // PREVENT DOUBLE EXTENSION ATTACK
+            // Hanya ambil extension terakhir (paling strict)
+            $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+            
+            // Whitelist extension
+            $allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
+            if (!in_array($file_ext, $allowed_ext)) {
+                $errors[] = "Extension file tidak diizinkan. Hanya JPG, PNG, GIF.";
+            }
+            
+            //  PREVENT RESERVED NAMES 
+            // Jangan allow filename yang berbahaya
+            $dangerous_names = ['php', 'phtml', 'php3', 'php4', 'php5', 'sh', 'exe', 'bat', 'cmd'];
+            if (in_array($file_ext, $dangerous_names)) {
+                $errors[] = "Extension file tidak diizinkan untuk keamanan";
+            }
+            
+            // Jika semua validasi lolos, upload file
+            if (empty($errors)) {
+                $upload_dir = '../../uploads/pengaduan/';
+                
+                // Buat folder jika belum ada
+                if (!is_dir($upload_dir)) {
+                    @mkdir($upload_dir, 0755, true);
+                }
+                
+                // Generate nama file yang benar aman
+                // Format: pengaduan_[user_id]_[random_hash].[ext]
+                $random_hash = bin2hex(random_bytes(8)); // 16 character random
+                $new_file_name = 'pengaduan_' . (int)$_SESSION['user_id'] . '_' . $random_hash . '.' . $file_ext;
+                $foto_path = $new_file_name;
+                
+                $upload_path = $upload_dir . $new_file_name;
+                
+                // Gunakan move_uploaded_file (secure function)
+                if (!move_uploaded_file($file_tmp, $upload_path)) {
+                    $errors[] = "Gagal menyimpan file. Mohon coba lagi.";
+                } else {
+                    // Set file permissions (no execute)
+                    @chmod($upload_path, 0644);
+                }
+            }
+        }
+        
+        // INSERT TO DATABASE WITH PREPARED STATEMENT 
+        if (empty($errors)) {
+            try {
+                $query = "INSERT INTO pengaduan (user_id, judul, deskripsi, lokasi, foto, status) 
+                          VALUES (?, ?, ?, ?, ?, 'pending')";
+                
+                $stmt = $conn->prepare($query);
+                
+                // Ensure type binding
+                $user_id = (int)$_SESSION['user_id'];
+                $stmt->bind_param('issss', $user_id, $judul, $deskripsi, $lokasi, $foto_path);
+                
+                if ($stmt->execute()) {
+                    $pengaduan_id = $stmt->insert_id;
+                    $success_message = "Pengaduan berhasil diajukan! Nomor ID: " . $pengaduan_id;
+                    
+                    // Update rate limit
+                    $_SESSION[$rate_limit_key] = $current_time;
+                    
+                    // Reset form
+                    $judul = $deskripsi = $lokasi = '';
+                    $_FILES = [];
+                    
+                    // Generate new CSRF token untuk next form
+                    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+                } else {
+                    // Don't reveal database error to user!
+                    $errors[] = "Gagal menyimpan pengaduan. Mohon hubungi support.";
+                    error_log("Database Error: " . $stmt->error, 3, "../../logs/pengaduan_errors.log");
+                }
+                
+                $stmt->close();
+            } catch (Exception $e) {
+                $errors[] = "Terjadi kesalahan sistem. Mohon coba lagi nanti.";
+                error_log("Exception: " . $e->getMessage(), 3, "../../logs/pengaduan_errors.log");
+            }
+        } else {
+            // Jika ada error, tampilkan semua error
+            $error_message = implode('<br>', $errors);
+        }
     }
 }
 
@@ -651,7 +768,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-        <?php include 'layout/header.html'; ?>
+        <?php include '../frontend/layout/header.html'; ?>
     
     <!-- HERO SECTION -->
     <div class="hero-pengaduan">
@@ -820,7 +937,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
     </div>
     
-    <?php include 'layout/footer.html'; ?>
+    <?php include '../frontend/layout/footer.html'; ?>
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

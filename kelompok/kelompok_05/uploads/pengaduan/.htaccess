@@ -1,0 +1,38 @@
+# ===== SECURITY: PREVENT PHP EXECUTION IN UPLOADS DIRECTORY =====
+# Jangan jalankan PHP files dalam folder ini (prevent shell upload)
+<FilesMatch "\.php$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Disable PHP execution untuk semua PHP variants
+<FilesMatch "\.(php|php3|php4|php5|phtml|shtml)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Disable script execution
+<IfModule mod_php5.c>
+    php_flag engine off
+</IfModule>
+
+# Disable .htaccess override untuk keamanan lebih
+<FilesMatch "\.htaccess$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Allow hanya image files
+<FilesMatch "\.(jpg|jpeg|png|gif)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Disable directory listing
+Options -Indexes
+
+# Prevent access ke hidden files
+<FilesMatch "^\.|^#.*#|~$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
