@@ -947,100 +947,120 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Custom JS -->
     <script>
-        // Character counter untuk judul
-        document.getElementById('judul').addEventListener('input', function() {
-            document.getElementById('judulCount').textContent = this.value.length;
-            const percent = (this.value.length / 100) * 100;
-            document.getElementById('judulBar').style.width = percent + '%';
-        });
-        
-        // Character counter untuk deskripsi
-        document.getElementById('deskripsi').addEventListener('input', function() {
-            const count = this.value.length;
-            document.getElementById('deskripsiCount').textContent = count;
-            const percent = (count / 5000) * 100;
-            document.getElementById('deskripsiBar').style.width = percent + '%';
+        // Wait for DOM to load
+        document.addEventListener('DOMContentLoaded', function() {
             
-            // Warning jika mendekati max
-            if (count > 4500) {
-                document.getElementById('deskripsiCountLabel').classList.add('warning');
-            } else {
-        // Handle file input
-        document.getElementById('foto').addEventListener('change', function() {
+            // === CHARACTER COUNTER: JUDUL ===
+            const judulInput = document.getElementById('judul');
+            const judulCount = document.getElementById('judulCount');
+            const judulBar = document.getElementById('judulBar');
+            
+            judulInput.addEventListener('input', function() {
+                const length = this.value.length;
+                judulCount.textContent = length;
+                const percent = (length / 100) * 100;
+                judulBar.style.width = percent + '%';
+            });
+            
+            // === CHARACTER COUNTER: DESKRIPSI ===
+            const deskripsiInput = document.getElementById('deskripsi');
+            const deskripsiCount = document.getElementById('deskripsiCount');
+            const deskripsiBar = document.getElementById('deskripsiBar');
+            const deskripsiCountLabel = document.getElementById('deskripsiCountLabel');
+            
+            deskripsiInput.addEventListener('input', function() {
+                const count = this.value.length;
+                deskripsiCount.textContent = count;
+                const percent = (count / 5000) * 100;
+                deskripsiBar.style.width = percent + '%';
+                
+                // Warning jika mendekati max
+                if (count > 4500) {
+                    deskripsiCountLabel.classList.add('warning');
+                } else {
+                    deskripsiCountLabel.classList.remove('warning');
+                }
+            });
+            
+            // === FILE INPUT HANDLER ===
+            const fotoInput = document.getElementById('foto');
             const fotoInfo = document.getElementById('fotoInfo');
-            if (this.files && this.files[0]) {
-                const file = this.files[0];
-                const fileSize = (file.size / 1024 / 1024).toFixed(2);
-                fotoInfo.innerHTML = `<i class="fas fa-check-circle"></i><span class="file-selected">${file.name} (${fileSize}MB)</span>`;
-                fotoInfo.classList.add('show');
-            } else {
-                fotoInfo.innerHTML = '';
-                fotoInfo.classList.remove('show');
-            }
-        });     fotoInfo.innerHTML = `<span class="file-selected">✓ ${file.name} (${fileSize}MB)</span>`;
-            } else {
-                fotoInfo.innerHTML = '';
-            }
-        });
-        
-        // Drag and drop
-        const fileInputLabel = document.querySelector('.file-input-label');
-        const fileInput = document.getElementById('foto');
-        
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            fileInputLabel.addEventListener(eventName, preventDefaults, false);
-        });
-        
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        
-        ['dragenter', 'dragover'].forEach(eventName => {
-            fileInputLabel.addEventListener(eventName, () => {
-                fileInputLabel.style.borderColor = 'var(--lampung-green)';
-                fileInputLabel.style.backgroundColor = '#f0f7f4';
-            });
-        });
-        
-        ['dragleave', 'drop'].forEach(eventName => {
-            fileInputLabel.addEventListener(eventName, () => {
-                fileInputLabel.style.borderColor = '#ddd';
-                fileInputLabel.style.backgroundColor = '#f9f9f9';
-            });
-        });
-        
-        fileInputLabel.addEventListener('drop', (e) => {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            fileInput.files = files;
             
-            // Trigger change event
-            const event = new Event('change', { bubbles: true });
-            fileInput.dispatchEvent(event);
-        // Form validation dan submission
-        document.getElementById('formPengaduan').addEventListener('submit', function(e) {
-            // Allow form to submit if valid
-            if (!this.checkValidity()) {
+            fotoInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    const fileSize = (file.size / 1024 / 1024).toFixed(2);
+                    fotoInfo.innerHTML = `<i class="fas fa-check-circle"></i><span class="file-selected">${file.name} (${fileSize}MB)</span>`;
+                    fotoInfo.classList.add('show');
+                } else {
+                    fotoInfo.innerHTML = '';
+                    fotoInfo.classList.remove('show');
+                }
+            });
+            
+            // === DRAG AND DROP ===
+            const fileInputLabel = document.querySelector('.file-input-label');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                fileInputLabel.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
                 e.preventDefault();
                 e.stopPropagation();
             }
-            this.classList.add('was-validated');
-        });
-        
-        // Reset form handler
-        document.querySelector('.btn-reset').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('formPengaduan').reset();
-            document.getElementById('fotoInfo').innerHTML = '';
-            document.getElementById('fotoInfo').classList.remove('show');
-            document.getElementById('judulCount').textContent = '0';
-            document.getElementById('judulBar').style.width = '0%';
-            document.getElementById('deskripsiCount').textContent = '0';
-            document.getElementById('deskripsiBar').style.width = '0%';
-            document.getElementById('deskripsiCountLabel').classList.remove('warning');
-        }); }
-            this.classList.add('was-validated');
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                fileInputLabel.addEventListener(eventName, () => {
+                    fileInputLabel.style.borderColor = 'var(--lampung-green)';
+                    fileInputLabel.style.backgroundColor = '#f0f7f4';
+                });
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                fileInputLabel.addEventListener(eventName, () => {
+                    fileInputLabel.style.borderColor = '#ddd';
+                    fileInputLabel.style.backgroundColor = '#f9f9f9';
+                });
+            });
+            
+            fileInputLabel.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                fotoInput.files = files;
+                
+                // Trigger change event
+                const event = new Event('change', { bubbles: true });
+                fotoInput.dispatchEvent(event);
+            });
+            
+            // === FORM SUBMISSION ===
+            const formPengaduan = document.getElementById('formPengaduan');
+            
+            formPengaduan.addEventListener('submit', function(e) {
+                if (!this.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                this.classList.add('was-validated');
+            });
+            
+            // === FORM RESET ===
+            const btnReset = document.querySelector('.btn-reset');
+            
+            btnReset.addEventListener('click', function(e) {
+                e.preventDefault();
+                formPengaduan.reset();
+                fotoInfo.innerHTML = '';
+                fotoInfo.classList.remove('show');
+                judulCount.textContent = '0';
+                judulBar.style.width = '0%';
+                deskripsiCount.textContent = '0';
+                deskripsiBar.style.width = '0%';
+                deskripsiCountLabel.classList.remove('warning');
+                formPengaduan.classList.remove('was-validated');
+            });
+            
         });
     </script>
 </body>
