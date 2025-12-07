@@ -65,8 +65,10 @@ $stmt->close();
 // Fungsi untuk format tanggal
 function format_tanggal($date) {
     $timestamp = strtotime($date);
-    setlocale(LC_TIME, 'id_ID.UTF-8');
-    return strftime('%d %B %Y %H:%M', $timestamp);
+    // strftime() deprecated in PHP 8.1+, using date() instead with Indonesian locale
+    $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    $month_index = date('n', $timestamp) - 1;
+    return date('d', $timestamp) . ' ' . $months[$month_index] . ' ' . date('Y H:i', $timestamp);
 }
 
 // Fungsi untuk menghitung waktu yang lalu
@@ -446,7 +448,7 @@ function get_status_badge($status) {
     </style>
 </head>
 <body>
-        <?php include 'layout/header.html'; ?>
+        <?php include '../frontend/layout/header.html'; ?>
     
     <!-- Page Header -->
     <div class="page-header">
@@ -618,7 +620,7 @@ function get_status_badge($status) {
         
     </div>
     
-    <?php include 'layout/footer.html'; ?>
+    <?php include '../frontend/layout/footer.html'; ?>
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
