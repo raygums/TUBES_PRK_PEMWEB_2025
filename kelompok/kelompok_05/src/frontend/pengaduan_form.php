@@ -148,6 +148,507 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <!-- LampungSmart Theme -->
     <link href="../../assets/css/lampung-theme.css" rel="stylesheet">
+    <style>
+        :root {
+            --lampung-green: #009639;
+            --lampung-red: #D60000;
+            --lampung-blue: #00308F;
+            --lampung-gold: #FFD700;
+            --lampung-charcoal: #212121;
+            --lampung-green-light: #E8F5E9;
+            --lampung-blue-light: #E3F2FD;
+            --lampung-red-light: #FFEBEE;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        
+        /* ============ HERO SECTION ============ */
+        .hero-pengaduan {
+            background: linear-gradient(135deg, var(--lampung-blue) 0%, var(--lampung-green) 100%);
+            color: white;
+            padding: 50px 20px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-pengaduan::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(100px, -50px);
+        }
+        
+        .hero-pengaduan::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 250px;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            transform: translate(-80px, 80px);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+        
+        .hero-content p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-bottom: 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-icon {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 3rem;
+        }
+        
+        /* ============ MAIN CONTAINER ============ */
+        .container-pengaduan {
+            max-width: 750px;
+            margin: 0 auto;
+        }
+        
+        /* ============ FORM CARD ============ */
+        .card-pengaduan {
+            background: white;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .card-pengaduan:hover {
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+        }
+        
+        /* ============ ALERT MESSAGES ============ */
+        .alert-success-custom {
+            background: linear-gradient(135deg, var(--lampung-green-light) 0%, #C8E6C9 100%);
+            border: none;
+            border-left: 4px solid var(--lampung-green);
+            color: #1b5e20;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-start;
+            animation: slideDown 0.3s ease;
+        }
+        
+        .alert-success-custom i {
+            margin-right: 12px;
+            margin-top: 2px;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .alert-danger-custom {
+            background: linear-gradient(135deg, var(--lampung-red-light) 0%, #FFCDD2 100%);
+            border: none;
+            border-left: 4px solid var(--lampung-red);
+            color: #b71c1c;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            animation: slideDown 0.3s ease;
+        }
+        
+        .alert-danger-custom i {
+            margin-right: 12px;
+            margin-top: 2px;
+            font-size: 1.2rem;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* ============ FORM GROUP ============ */
+        .form-group-custom {
+            margin-bottom: 28px;
+        }
+        
+        .form-group-custom label {
+            display: block;
+            color: var(--lampung-charcoal);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .form-group-custom .required-star {
+            color: var(--lampung-red);
+            margin-left: 2px;
+        }
+        
+        /* ============ INPUT & TEXTAREA ============ */
+        .form-control-custom {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+            background-color: #fafbfc;
+        }
+        
+        .form-control-custom:focus {
+            outline: none;
+            border-color: var(--lampung-green);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(0, 150, 57, 0.1);
+        }
+        
+        .form-control-custom:invalid {
+            border-color: var(--lampung-red);
+        }
+        
+        .form-control-custom:invalid:focus {
+            box-shadow: 0 0 0 4px rgba(214, 0, 0, 0.1);
+        }
+        
+        textarea.form-control-custom {
+            resize: vertical;
+            min-height: 130px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        /* ============ HELPER TEXT ============ */
+        .form-text-custom {
+            display: block;
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 6px;
+            opacity: 0.9;
+        }
+        
+        .form-text-custom i {
+            margin-right: 4px;
+            color: var(--lampung-blue);
+        }
+        
+        /* ============ CHARACTER COUNTER ============ */
+        .char-count-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .char-count {
+            font-size: 0.85rem;
+            color: #999;
+            font-weight: 500;
+        }
+        
+        .char-count-bar {
+            height: 4px;
+            background-color: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+            flex: 1;
+            margin: 0 10px;
+        }
+        
+        .char-count-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--lampung-green), var(--lampung-blue));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .char-count.warning {
+            color: var(--lampung-red);
+            font-weight: 600;
+        }
+        
+        .char-count.warning ~ .char-count-bar .char-count-bar-fill {
+            background: linear-gradient(90deg, #FF9800, var(--lampung-red));
+        }
+        
+        /* ============ FILE UPLOAD ============ */
+        .file-input-wrapper {
+            position: relative;
+            display: block;
+        }
+        
+        #foto {
+            display: none;
+        }
+        
+        .file-input-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 150px;
+            border: 2px dashed #d0d0d0;
+            border-radius: 12px;
+            padding: 30px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #f9fafb 0%, #f0f1f3 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .file-input-label::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(0, 150, 57, 0.02) 100%);
+            pointer-events: none;
+        }
+        
+        .file-input-label:hover {
+            border-color: var(--lampung-green);
+            background: linear-gradient(135deg, #f0f7f4 0%, #e8f5e9 100%);
+        }
+        
+        .file-input-label.dragover {
+            border-color: var(--lampung-green);
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            box-shadow: 0 8px 24px rgba(0, 150, 57, 0.15);
+        }
+        
+        .file-input-icon {
+            font-size: 2.5rem;
+            color: var(--lampung-green);
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .file-input-label:hover .file-input-icon {
+            transform: scale(1.1);
+        }
+        
+        .file-input-label span {
+            text-align: center;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .file-input-label small {
+            color: #999;
+            font-size: 0.85rem;
+        }
+        
+        #fotoInfo {
+            margin-top: 12px;
+            padding: 10px 12px;
+            background-color: var(--lampung-green-light);
+            border-left: 3px solid var(--lampung-green);
+            border-radius: 6px;
+            display: none;
+        }
+        
+        #fotoInfo.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        #fotoInfo i {
+            color: var(--lampung-green);
+            margin-right: 6px;
+        }
+        
+        .file-selected {
+            color: var(--lampung-green);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        /* ============ BUTTON SECTION ============ */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 35px;
+            margin-bottom: 30px;
+        }
+        
+        .btn-submit, .btn-reset {
+            flex: 1;
+            padding: 13px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, var(--lampung-green) 0%, #007a2f 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 150, 57, 0.25);
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 150, 57, 0.35);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(0, 150, 57, 0.25);
+        }
+        
+        .btn-reset {
+            background-color: #f0f0f0;
+            color: var(--lampung-charcoal);
+            border: 2px solid #e0e0e0;
+        }
+        
+        .btn-reset:hover {
+            background-color: #e8e8e8;
+            border-color: var(--lampung-blue);
+            color: var(--lampung-blue);
+        }
+        
+        /* ============ INFO BOX ============ */
+        .info-box {
+            background: linear-gradient(135deg, var(--lampung-blue-light) 0%, #B3E5FC 100%);
+            border-left: 4px solid var(--lampung-blue);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .info-box h5 {
+            color: var(--lampung-blue);
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .info-box h5 i {
+            font-size: 1.2rem;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            margin-bottom: 0;
+        }
+        
+        .info-box li {
+            color: #333;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            padding-left: 24px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .info-box li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--lampung-green);
+            font-weight: bold;
+        }
+        
+        .info-box li:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn-submit, .btn-reset {
+                flex: auto;
+                width: 100%;
+            }
+        }
+        
+        /* ============ ANIMATIONS ============ */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .form-group-custom {
+            animation: fadeIn 0.4s ease forwards;
+        }
+        
+        .form-group-custom:nth-child(1) { animation-delay: 0.1s; }
+        .form-group-custom:nth-child(2) { animation-delay: 0.2s; }
+        .form-group-custom:nth-child(3) { animation-delay: 0.3s; }
+        .form-group-custom:nth-child(4) { animation-delay: 0.4s; }
+    </style>
 </head>
 <body>
         <?php include 'layout/header.html'; ?>
@@ -326,7 +827,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Custom JS -->
      <script>
-        
+
      </script>
 </body>
 </html>
