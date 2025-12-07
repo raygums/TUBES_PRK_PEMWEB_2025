@@ -826,8 +826,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom JS -->
-     <script>
-
-     </script>
+    <script>
+        // Character counter untuk judul
+        document.getElementById('judul').addEventListener('input', function() {
+            document.getElementById('judulCount').textContent = this.value.length;
+        });
+        
+        // Character counter untuk deskripsi
+        document.getElementById('deskripsi').addEventListener('input', function() {
+            const count = this.value.length;
+            document.getElementById('deskripsiCount').textContent = count;
+            
+            // Warning jika mendekati max
+            if (count > 4500) {
+                document.getElementById('deskripsiCount').parentElement.classList.add('warning');
+            } else {
+                document.getElementById('deskripsiCount').parentElement.classList.remove('warning');
+            }
+        });
+        
+        // Handle file input
+        document.getElementById('foto').addEventListener('change', function() {
+            const fotoInfo = document.getElementById('fotoInfo');
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                const fileSize = (file.size / 1024 / 1024).toFixed(2);
+                fotoInfo.innerHTML = `<span class="file-selected">✓ ${file.name} (${fileSize}MB)</span>`;
+            } else {
+                fotoInfo.innerHTML = '';
+            }
+        });
+        
+        // Drag and drop
+        const fileInputLabel = document.querySelector('.file-input-label');
+        const fileInput = document.getElementById('foto');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileInputLabel.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            fileInputLabel.addEventListener(eventName, () => {
+                fileInputLabel.style.borderColor = 'var(--lampung-green)';
+                fileInputLabel.style.backgroundColor = '#f0f7f4';
+            });
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            fileInputLabel.addEventListener(eventName, () => {
+                fileInputLabel.style.borderColor = '#ddd';
+                fileInputLabel.style.backgroundColor = '#f9f9f9';
+            });
+        });
+        
+        fileInputLabel.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            fileInput.files = files;
+            
+            // Trigger change event
+            const event = new Event('change', { bubbles: true });
+            fileInput.dispatchEvent(event);
+        });
+        
+        // Form validation
+        document.getElementById('formPengaduan').addEventListener('submit', function(e) {
+            if (!this.checkValidity() === false) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            this.classList.add('was-validated');
+        });
+    </script>
 </body>
 </html>
