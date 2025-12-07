@@ -111,12 +111,338 @@ function get_status_badge($status) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riwayat Pengaduan Warga</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
-
+    <title>Riwayat Pengaduan - LampungSmart</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- LampungSmart Theme -->
+    <link href="../../assets/css/lampung-theme.css" rel="stylesheet">
+    
     <style>
-        /* Bagian Styling akan ada disini ntar */
+        :root {
+            --lampung-green: #009639;
+            --lampung-red: #D60000;
+            --lampung-blue: #00308F;
+            --lampung-gold: #FFD700;
+            --lampung-charcoal: #212121;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, var(--lampung-green) 0%, var(--lampung-blue) 100%);
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+        
+        .page-header h1 {
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .page-header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+        
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .filter-section .row {
+            align-items: flex-end;
+        }
+        
+        .filter-section label {
+            color: var(--lampung-charcoal);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .form-control,
+        .form-select {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--lampung-green);
+            box-shadow: 0 0 0 0.2rem rgba(0, 150, 57, 0.25);
+        }
+        
+        .btn-filter {
+            background-color: var(--lampung-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-filter:hover {
+            background-color: #007a2f;
+            transform: translateY(-2px);
+        }
+        
+        .btn-reset-filter {
+            background-color: #999;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-reset-filter:hover {
+            background-color: #777;
+        }
+        
+        .pengaduan-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--lampung-green);
+        }
+        
+        .pengaduan-card:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .pengaduan-card.pending {
+            border-left-color: #ffc107;
+        }
+        
+        .pengaduan-card.proses {
+            border-left-color: #17a2b8;
+        }
+        
+        .pengaduan-card.selesai {
+            border-left-color: #28a745;
+        }
+        
+        .pengaduan-card.ditolak {
+            border-left-color: var(--lampung-red);
+        }
+        
+        .pengaduan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+        
+        .pengaduan-header h5 {
+            color: var(--lampung-charcoal);
+            font-weight: 700;
+            margin: 0;
+            flex: 1;
+        }
+        
+        .pengaduan-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+        }
+        
+        .pengaduan-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .pengaduan-meta-item i {
+            color: var(--lampung-green);
+        }
+        
+        .pengaduan-deskripsi {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .pengaduan-foto {
+            margin: 15px 0;
+        }
+        
+        .pengaduan-foto img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .pengaduan-lokasi {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .pengaduan-lokasi i {
+            color: var(--lampung-green);
+            margin-right: 8px;
+        }
+        
+        .pengaduan-action {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn-detail {
+            background-color: var(--lampung-green);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-detail:hover {
+            background-color: #007a2f;
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+        
+        .btn-lihat-tanggapan {
+            background-color: var(--lampung-blue);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-lihat-tanggapan:hover {
+            background-color: #002060;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .tanggapan-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .tanggapan-section.show {
+            max-height: 500px;
+        }
+        
+        .tanggapan-item {
+            background-color: white;
+            padding: 12px;
+            border-left: 3px solid var(--lampung-blue);
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        
+        .tanggapan-header {
+            color: var(--lampung-blue);
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+        
+        .tanggapan-content {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+        
+        .empty-state h4 {
+            color: var(--lampung-charcoal);
+            font-weight: 600;
+        }
+        
+        .btn-new-pengaduan {
+            background-color: var(--lampung-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-new-pengaduan:hover {
+            background-color: #007a2f;
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 150, 57, 0.3);
+        }
+        
+        .badge-count {
+            background-color: var(--lampung-red);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 5px;
+        }
     </style>
 </head>
 <body>
