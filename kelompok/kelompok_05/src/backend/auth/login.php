@@ -48,7 +48,8 @@ if (isset($_POST['login'])) {
     <title>Login - LampungSmart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <link rel="stylesheet" href="../../frontend/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/logo-navbar.css">
 </head>
 
 <body class="bg-auth"> 
@@ -59,6 +60,7 @@ if (isset($_POST['login'])) {
                 <div class="card card-login p-4 p-md-5 bg-white">
                     <div class="card-body px-0">
                         <div class="text-center mb-5">
+                            <img src="../../assets/images/logo-lampung.png" alt="Logo Lampung" class="logo-lampung-sidebar"> 
                             <h3 class="fw-bold text-brand-primary">LampungSmart</h3>
                             <p class="text-muted">Masuk untuk mengakses layanan</p>
                         </div>

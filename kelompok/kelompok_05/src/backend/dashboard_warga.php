@@ -9,8 +9,8 @@ $total_laporan = 0;
 $total_umkm = 0;
 $status_akun = "Terverifikasi"; 
 
-require '../frontend/layout/header.html';
-require '../frontend/layout/sidebar.php';
+require __DIR__ . '/../frontend/layout/header.php';
+require __DIR__ . '/../frontend/layout/sidebar.php';
 ?>
 
 <div class="d-flex justify-content-between align-items-end mb-5">
@@ -150,5 +150,5 @@ require '../frontend/layout/sidebar.php';
 </div>
 
 <?php
-require '../frontend/layout/footer.html';
+require __DIR__ . '/../frontend/layout/footer.php';
 ?>
