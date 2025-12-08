@@ -35,7 +35,7 @@ $role = $_SESSION['role'] ?? 'guest';
             <li class="nav-header text-uppercase text-white-50 fs-7 fw-bold mt-3 mb-2 px-3" style="font-size: 0.75rem;">UMKM</li>
             
             <li class="nav-item">
-                <a href="../backend/umkm_daftar.php" class="nav-link d-flex align-items-center">
+                <a href="../frontend/daftar_umkm.php" class="nav-link d-flex align-items-center">
                     <i class="fas fa-store me-3"></i> Daftar UMKM
                 </a>
             </li>

@@ -102,7 +102,7 @@ require '../frontend/layout/sidebar.php';
                     dan dapatkan kemudahan izin.
                 </p>
                 
-                <a href="umkm_daftar.php" class="btn btn-outline-primary fw-bold px-4 py-2">
+                <a href="../frontend/daftar_umkm.php" class="btn btn-outline-primary fw-bold px-4 py-2">
                     <i class="fas fa-file-signature me-2"></i> Daftar Sekarang
                 </a>
 
