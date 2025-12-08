@@ -65,7 +65,7 @@ if (isset($_SESSION['user_id'])) {
                     transparan, dan responsif dalam melayani kebutuhan infrastruktur dan perizinan UMKM.
                 </p>
                 <div class="mt-5">
-                    <a href="../backend/auth/register.php" class="btn btn-warning btn-lg me-3 shadow-lampung-md">
+                    <a href="../auth/register.php" class="btn btn-warning btn-lg me-3 shadow-lampung-md">
                         <i class="bi bi-person-plus-fill"></i> Daftar Gratis
                     </a>
                     <a href="#tentang" class="btn btn-outline-light btn-lg shadow-lampung-sm">
@@ -548,10 +548,10 @@ if (isset($_SESSION['user_id'])) {
                         dan transparansi dalam pelayanan publik
                     </p>
                     <div class="d-flex justify-content-center gap-3 flex-wrap">
-                        <a href="../backend/auth/register.php" class="btn btn-warning btn-lg shadow-lampung-lg">
+                        <a href="../auth/register.php" class="btn btn-warning btn-lg shadow-lampung-lg">
                             <i class="bi bi-person-plus-fill"></i> Daftar Sekarang
                         </a>
-                        <a href="../backend/auth/login.php" class="btn btn-outline-light btn-lg">
+                        <a href="../auth/login.php" class="btn btn-outline-light btn-lg">
                             <i class="bi bi-box-arrow-in-right"></i> Sudah Punya Akun? Login
                         </a>
                     </div>

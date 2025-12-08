@@ -254,10 +254,10 @@ session_start();
                         Daftar sekarang dan mulai laporkan masalah infrastruktur di sekitar Anda
                     </p>
                     <div class="d-flex justify-content-center gap-3 flex-wrap">
-                        <a href="../backend/auth/register.php" class="btn btn-warning btn-lg shadow-lampung-lg">
+                        <a href="../auth/register.php" class="btn btn-warning btn-lg shadow-lampung-lg">
                             <i class="bi bi-person-plus-fill"></i> Daftar Sekarang
                         </a>
-                        <a href="../backend/auth/login.php" class="btn btn-outline-light btn-lg">
+                        <a href="../auth/login.php" class="btn btn-outline-light btn-lg">
                             <i class="bi bi-box-arrow-in-right"></i> Sudah Punya Akun? Login
                         </a>
                     </div>

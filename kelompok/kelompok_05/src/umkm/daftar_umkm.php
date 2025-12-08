@@ -7,8 +7,8 @@ if (!isset($_SESSION['login'])) {
 }
 
 // TARIK REQUIRE DARI DASHBOARD
-require 'layout/header.html';
-require 'layout/sidebar.php';
+require '../layouts/header.php';
+require '../layouts/sidebar.php';
 ?>
 
 <div class="flex-grow-1 p-4" style="background:#f8f9fa;">

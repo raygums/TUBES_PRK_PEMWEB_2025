@@ -8,9 +8,9 @@ if (!isset($_SESSION['login'])) {
 
 $user_id = $_SESSION['user_id'];
 
-require "config.php";
-require "../frontend/layout/header.html";
-require "../frontend/layout/sidebar.php";
+require "../config/config.php";
+require "../layouts/header.php";
+require "../layouts/sidebar.php";
 
 // Ambil SEMUA pengajuan UMKM user
 $sql = "SELECT * FROM umkm WHERE user_id = '$user_id' ORDER BY created_at DESC";

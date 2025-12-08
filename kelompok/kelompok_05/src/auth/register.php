@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../config.php'; 
+require '../config/config.php'; 
 $success = "";
 $error = "";
 
@@ -34,8 +34,8 @@ if (isset($_POST['register'])) {
     <title>Daftar - LampungSmart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="../../assets/css/logo-navbar.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/logo-navbar.css">
 </head>
 
 <body class="bg-auth">

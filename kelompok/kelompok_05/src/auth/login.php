@@ -1,12 +1,12 @@
 <?php
 session_start();
-require '../config.php';
+require '../config/config.php';
 
 if (isset($_SESSION['login'])) {
     if ($_SESSION['role'] == 'admin') {
-        header("Location: ../dashboard_admin.php");
+        header("Location: ../dashboard/dashboard_admin.php");
     } else {
-        header("Location: ../dashboard_warga.php");
+        header("Location: ../dashboard/dashboard_warga.php");
     }
     exit;
 }
@@ -30,9 +30,9 @@ if (isset($_POST['login'])) {
             $_SESSION['profile_photo'] = $row['profile_photo'] ?? 'default.jpg'; // Simpan foto profil ke session
 
             if ($row['role'] == 'admin') {
-                header("Location: ../dashboard_admin.php");
+                header("Location: ../dashboard/dashboard_admin.php");
             } else {
-                header("Location: ../dashboard_warga.php");
+                header("Location: ../dashboard/dashboard_warga.php");
             }
             exit;
         }
@@ -49,8 +49,8 @@ if (isset($_POST['login'])) {
     <title>Login - LampungSmart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="../../assets/css/logo-navbar.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/logo-navbar.css">
 </head>
 
 <body class="bg-auth"> 

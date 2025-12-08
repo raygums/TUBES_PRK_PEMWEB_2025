@@ -1,5 +1,5 @@
 <?php
-require_once "config.php"; // koneksi database
+require_once "../config/config.php"; // koneksi database
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($nama_usaha == "" || $nama_pemilik == "" || $bidang_usaha == "" || 
         $alamat_usaha == "" || $no_telepon == "") {
         
-        header("Location: ../frontend/daftar_umkm.php?error=Semua field harus diisi");
+        header("Location: daftar_umkm.php?error=Semua field harus diisi");
         exit;
     }
 
