@@ -5,15 +5,20 @@ $role = $_SESSION['role'] ?? 'guest';
 <div class="sidebar p-3 d-flex flex-column" style="width: 260px; min-height: 100vh;">
     
     <div class="text-center mt-3 mb-5">
-        <a href="../backend/dashboard_warga.php" class="text-decoration-none d-flex align-items-center justify-content-center sidebar-logo-link">
-            <img src="../assets/images/logo-lampung.png" alt="Logo Lampung" class="logo-lampung-sidebar"> 
+        <?php 
+        $is_frontend = strpos($_SERVER['PHP_SELF'], 'frontend') !== false;
+        $dashboard_link = $is_frontend ? '../backend/dashboard_warga.php' : 'dashboard_warga.php';
+        $logo_path = '../assets/images/logo-lampung.png';
+        ?>
+        <a href="<?php echo $dashboard_link; ?>" class="text-decoration-none d-flex align-items-center justify-content-center sidebar-logo-link">
+            <img src="<?php echo $logo_path; ?>" alt="Logo Lampung" class="logo-lampung-sidebar"> 
             <span class="text-white fw-bold fs-5 ms-2">Lampung<span class="text-warning">Smart</span></span>
         </a>
     </div>
     
     <ul class="nav flex-column gap-2">
         <li class="nav-item">
-            <a href="../backend/dashboard_warga.php" class="nav-link d-flex align-items-center <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard_warga.php' ? 'active' : ''; ?>">
+            <a href="<?php echo (strpos($_SERVER['PHP_SELF'], 'frontend') !== false) ? '../backend/dashboard_warga.php' : 'dashboard_warga.php'; ?>" class="nav-link d-flex align-items-center <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard_warga.php' ? 'active' : ''; ?>">
                 <i class="fas fa-home me-3"></i> Dashboard
             </a>
         </li>
@@ -48,7 +53,7 @@ $role = $_SESSION['role'] ?? 'guest';
             <li class="nav-header text-uppercase text-white-50 fs-7 fw-bold mt-3 mb-2 px-3" style="font-size: 0.75rem;">Akun</li>
             
             <li class="nav-item">
-                <a href="../frontend/profile.php" class="nav-link d-flex align-items-center <?php echo basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'active' : ''; ?>">
+                <a href="<?php echo (basename($_SERVER['PHP_SELF']) == 'profile.php') ? 'profile.php' : '../frontend/profile.php'; ?>" class="nav-link d-flex align-items-center <?php echo basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'active' : ''; ?>">
                     <i class="fas fa-user-circle me-3"></i> Profil Saya
                 </a>
             </li>
@@ -76,7 +81,7 @@ $role = $_SESSION['role'] ?? 'guest';
 
     <div class="mt-auto mb-4">
         <hr class="border-secondary opacity-50">
-        <a href="../backend/auth/logout.php" class="nav-link text-danger d-flex align-items-center fw-bold" onclick="return confirm('Yakin mau keluar?')">
+        <a href="<?php echo (strpos($_SERVER['PHP_SELF'], 'frontend') !== false) ? '../backend/auth/logout.php' : 'auth/logout.php'; ?>" class="nav-link text-danger d-flex align-items-center fw-bold" onclick="return confirm('Yakin mau keluar?')">
             <i class="fas fa-sign-out-alt me-3"></i> Logout
         </a>
     </div>

@@ -17,17 +17,22 @@
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
+    <?php 
+    // Determine CSS path based on current location
+    $css_path = (strpos($_SERVER['PHP_SELF'], 'backend') !== false) ? '../assets/css/' : '../assets/css/';
+    ?>
+    
     <!-- LampungSmart Theme (Tema Resmi Provinsi Lampung) -->
-    <link href="../assets/css/lampung-theme.css" rel="stylesheet">
+    <link href="<?php echo $css_path; ?>lampung-theme.css" rel="stylesheet">
     
     <!-- Dashboard Page Custom Styles -->
-    <link href="../assets/css/dashboard.css" rel="stylesheet">
+    <link href="<?php echo $css_path; ?>dashboard.css" rel="stylesheet">
     
     <!-- Landing Page Custom Styles -->
-    <link href="../assets/css/landing-page.css" rel="stylesheet">
+    <link href="<?php echo $css_path; ?>landing-page.css" rel="stylesheet">
 
     <!-- Logo Navbar Styles -->
-    <link href="../assets/css/logo-navbar.css" rel="stylesheet">
+    <link href="<?php echo $css_path; ?>logo-navbar.css" rel="stylesheet">
 </head>
 <body>
     <div class="d-flex">
