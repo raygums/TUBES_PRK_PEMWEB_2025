@@ -229,7 +229,7 @@ $activities = [
 ];
 ?>
 <?php
-require '../frontend/layout/header.html';
+require __DIR__ . '/layout/header.php';
 ?>
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -240,7 +240,7 @@ require '../frontend/layout/header.html';
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/css/profile-custom.css">
 <?php
-require '../frontend/layout/sidebar.php';
+require __DIR__ . '/layout/sidebar.php';
 ?>
 
     <!-- Profile Header -->
@@ -649,5 +649,5 @@ require '../frontend/layout/sidebar.php';
     </script>
 
 <?php
-require '../frontend/layout/footer.html';
+require __DIR__ . '/layout/footer.php';
 ?>

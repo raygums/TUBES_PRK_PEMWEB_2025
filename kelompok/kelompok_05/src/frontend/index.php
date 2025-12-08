@@ -14,10 +14,33 @@ if (isset($_SESSION['user_id'])) {
     header("Location: profile.php");
     exit();
 }
-
-require '../frontend/layout/header.html';
-
 ?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LampungSmart - Platform Good Governance digital terintegrasi untuk melayani masyarakat Lampung dalam pelaporan infrastruktur dan perizinan UMKM">
+    <meta name="keywords" content="lampung smart, good governance, pengaduan infrastruktur, perizinan umkm, pemerintah lampung">
+    <meta name="author" content="Pemerintah Provinsi Lampung">
+    <title>LampungSmart - Platform Digital Good Governance Provinsi Lampung</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- LampungSmart Theme (Tema Resmi Provinsi Lampung) -->
+    <link href="../assets/css/lampung-theme.css" rel="stylesheet">
+    
+    <!-- Landing Page Custom Styles -->
+    <link href="../assets/css/landing-page.css" rel="stylesheet">
+    
+    <!-- Logo Navbar Styles -->
+    <link href="../assets/css/logo-navbar.css" rel="stylesheet">
+</head>
+<body>
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-lampung sticky-top">
