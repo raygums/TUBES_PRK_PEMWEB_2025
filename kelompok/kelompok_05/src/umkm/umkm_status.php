@@ -89,4 +89,4 @@ $result = mysqli_query($conn, $sql);
 
 </div>
 
-<?php require "../frontend/layout/footer.html"; ?>
+<?php require "../layouts/footer.php"; ?>

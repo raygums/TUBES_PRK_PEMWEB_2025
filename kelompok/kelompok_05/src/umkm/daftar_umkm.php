@@ -75,7 +75,7 @@ require '../layouts/sidebar.php';
         </form>
     </div>
 
-    <?php require 'layout/footer.html'; ?>
+    <?php require '../layouts/footer.php'; ?>
 
 </div>
 
