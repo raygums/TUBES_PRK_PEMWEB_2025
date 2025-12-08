@@ -102,7 +102,7 @@ require __DIR__ . '/../layouts/sidebar.php';
                     dan dapatkan kemudahan izin.
                 </p>
                 
-                <a href="../frontend/daftar_umkm.php" class="btn btn-outline-primary fw-bold px-4 py-2">
+                <a href="../umkm/daftar_umkm.php" class="btn btn-outline-primary fw-bold px-4 py-2">
                     <i class="fas fa-file-signature me-2"></i> Daftar Sekarang
                 </a>
 
@@ -135,7 +135,7 @@ require __DIR__ . '/../layouts/sidebar.php';
                         </p>
                     </div>
                     <div class="col-md-3 text-end">
-                        <a href="../frontend/profile.php" class="btn btn-primary fw-bold px-4 py-2">
+                        <a href="../profile/profile.php" class="btn btn-primary fw-bold px-4 py-2">
                             <i class="fas fa-user-edit me-2"></i> Lihat Profil
                         </a>
                     </div>
@@ -150,5 +150,5 @@ require __DIR__ . '/../layouts/sidebar.php';
 </div>
 
 <?php
-require __DIR__ . '/../frontend/layout/footer.php';
+require __DIR__ . '/../layouts/footer.php';
 ?>
