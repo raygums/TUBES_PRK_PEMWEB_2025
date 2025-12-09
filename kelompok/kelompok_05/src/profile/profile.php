@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             
             // Buat folder upload jika belum ada
-            $upload_dir = __DIR__ . '/../../uploads/profile/';
+            $upload_dir = '../uploads/profile/';
             if (!file_exists($upload_dir)) {
                 mkdir($upload_dir, 0755, true);
             }
@@ -212,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Set path foto profil
-$profile_photo_path = '../../uploads/profile/' . ($user['profile_photo'] ?: 'default.jpg');
+$profile_photo_path = '../uploads/profile/' . ($user['profile_photo'] ?: 'default.jpg');
 
 // Calculate profile completeness
 $completeness = 0;
@@ -230,7 +230,7 @@ $activities = [
 ];
 ?>
 <?php
-require __DIR__ . '/layout/header.php';
+require '../layouts/header.php';
 ?>
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -241,7 +241,7 @@ require __DIR__ . '/layout/header.php';
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/css/profile-custom.css">
 <?php
-require __DIR__ . '/layout/sidebar.php';
+require '../layouts/sidebar.php';
 ?>
 
     <!-- Profile Header -->
@@ -650,5 +650,5 @@ require __DIR__ . '/layout/sidebar.php';
     </script>
 
 <?php
-require __DIR__ . '/layout/footer.php';
+require '../layouts/footer.php';
 ?>
