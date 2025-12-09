@@ -1,15 +1,6 @@
 <?php
-/**
- * LampungSmart - Landing Page Publik
- * Jobdesk Sulthon: Landing Page
- * 
- * Halaman ini hanya dapat diakses oleh pengunjung yang BELUM login.
- */
-
-// Start session untuk cek login status
 session_start();
 
-// Redirect ke profile jika sudah login
 if (isset($_SESSION['user_id'])) {
     header("Location: profile.php");
     exit();
@@ -25,29 +16,17 @@ if (isset($_SESSION['user_id'])) {
     <meta name="author" content="Pemerintah Provinsi Lampung">
     <title>LampungSmart - Platform Digital Good Governance Provinsi Lampung</title>
     
-    <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
-    <!-- LampungSmart Theme (Tema Resmi Provinsi Lampung) -->
     <link href="../assets/css/lampung-theme.css" rel="stylesheet">
-    
-    <!-- Landing Page Custom Styles -->
     <link href="../assets/css/landing-page.css" rel="stylesheet">
-    
-    <!-- Logo Navbar Styles -->
     <link href="../assets/css/logo-navbar.css" rel="stylesheet">
-    
-    <!-- Dashboard & Voting Widget Styles -->
     <link href="../assets/css/dashboard-voting.css" rel="stylesheet">
 </head>
 <body>
 
-    <?php include 'layout/navbar-landing.php'; ?>
+    <?php include '../layouts/navbar-landing.php'; ?>
 
-    <!-- Hero Section -->
     <section class="hero-lampung">
         <div class="container">
             <div class="hero-content text-center">
@@ -81,7 +60,6 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </section>
 
-    <!-- Stats Section -->
     <section class="stats-section">
         <div class="container">
             <div class="row">
@@ -113,7 +91,6 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </section>
 
-    <!-- About Section -->
     <section class="about-section" id="tentang">
         <div class="container">
             <div class="row mb-5">
@@ -171,7 +148,6 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </section>
 
-    <!-- Services Section -->
     <section class="py-5 bg-lampung-gray-50" id="layanan">
         <div class="container">
             <div class="row mb-5">
@@ -184,7 +160,6 @@ if (isset($_SESSION['user_id'])) {
             </div>
             
             <div class="row g-4">
-                <!-- Card Pengaduan -->
                 <div class="col-lg-6">
                     <div class="card-feature-lampung">
                         <div class="feature-icon">
@@ -288,7 +263,6 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </section>
 
-    <!-- How It Works Section -->
     <section class="py-5 bg-white" id="cara-kerja">
         <div class="container">
             <div class="row mb-5">
@@ -301,8 +275,7 @@ if (isset($_SESSION['user_id'])) {
             </div>
             
             <div class="row g-4">
-                <!-- Step 1 -->
-                <div class="col-md-6 col-lg-3">
+                <div class="col-lg-3 col-md-6">
                     <div class="process-card">
                         <div class="process-number">1</div>
                         <h4 class="process-title">Daftar & Login</h4>
@@ -313,7 +286,6 @@ if (isset($_SESSION['user_id'])) {
                     </div>
                 </div>
                 
-                <!-- Step 2 -->
                 <div class="col-md-6 col-lg-3">
                     <div class="process-card">
                         <div class="process-number">2</div>
@@ -325,7 +297,6 @@ if (isset($_SESSION['user_id'])) {
                     </div>
                 </div>
                 
-                <!-- Step 3 -->
                 <div class="col-md-6 col-lg-3">
                     <div class="process-card">
                         <div class="process-number">3</div>
@@ -337,7 +308,6 @@ if (isset($_SESSION['user_id'])) {
                     </div>
                 </div>
                 
-                <!-- Step 4 -->
                 <div class="col-md-6 col-lg-3">
                     <div class="process-card">
                         <div class="process-number">4</div>
@@ -367,7 +337,6 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </section>
 
-    <!-- Benefits Section -->
     <section class="cta-section">
         <div class="container">
             <div class="cta-content">
@@ -485,7 +454,6 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </section>
 
-    <!-- Testimonial Section -->
     <section class="testimonial-section">
         <div class="container">
             <div class="row mb-5">
@@ -537,7 +505,6 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </section>
 
-    <!-- Final CTA -->
     <section class="py-5 bg-lampung-gradient-primary text-white">
         <div class="container">
             <div class="row">
@@ -560,16 +527,11 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </section>
 
-    <?php include 'layout/footer-landing.php'; ?>
+    <?php include '../layouts/footer-landing.php'; ?>
 
-    <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Custom JavaScript -->
     <script>
-        /**
-         * Smooth Scroll untuk anchor links
-         */
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
@@ -577,7 +539,7 @@ if (isset($_SESSION['user_id'])) {
                     e.preventDefault();
                     const target = document.querySelector(href);
                     if (target) {
-                        const offsetTop = target.offsetTop - 70; // Offset untuk fixed navbar
+                        const offsetTop = target.offsetTop - 70; 
                         window.scrollTo({
                             top: offsetTop,
                             behavior: 'smooth'
@@ -587,9 +549,6 @@ if (isset($_SESSION['user_id'])) {
             });
         });
 
-        /**
-         * Navbar scroll effect - transparansi saat di top
-         */
         const navbar = document.querySelector('.navbar-lampung');
         window.addEventListener('scroll', function() {
             if (window.scrollY > 50) {
@@ -599,9 +558,6 @@ if (isset($_SESSION['user_id'])) {
             }
         });
 
-        /**
-         * Animate on scroll - untuk fade-in animations
-         */
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -100px 0px'
@@ -616,7 +572,7 @@ if (isset($_SESSION['user_id'])) {
             });
         }, observerOptions);
 
-        // Observe semua elemen dengan class fade-in-lampung
+        
         document.querySelectorAll('.fade-in-lampung').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
@@ -624,12 +580,9 @@ if (isset($_SESSION['user_id'])) {
             observer.observe(el);
         });
 
-        /**
-         * Counter animation untuk stats section
-         */
         function animateCounter(element, target) {
             let current = 0;
-            const increment = target / 50; // 50 steps
+            const increment = target / 50; 
             const timer = setInterval(() => {
                 current += increment;
                 if (current >= target) {
@@ -641,7 +594,7 @@ if (isset($_SESSION['user_id'])) {
             }, 30);
         }
 
-        // Trigger counter animation saat stats section terlihat
+        
         const statsSection = document.querySelector('.stats-section');
         if (statsSection) {
             const statsObserver = new IntersectionObserver(function(entries) {
@@ -649,7 +602,7 @@ if (isset($_SESSION['user_id'])) {
                     if (entry.isIntersecting) {
                         const statNumbers = entry.target.querySelectorAll('.stat-number');
                         statNumbers.forEach((stat, index) => {
-                            const targets = [1000, 500, 200]; // Nilai target untuk setiap stat
+                            const targets = [1000, 500, 200]; 
                             setTimeout(() => {
                                 const icon = stat.querySelector('i');
                                 const iconHTML = icon ? icon.outerHTML + ' ' : '';
@@ -665,9 +618,6 @@ if (isset($_SESSION['user_id'])) {
             statsObserver.observe(statsSection);
         }
 
-        /**
-         * Active nav link highlight based on scroll position
-         */
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
 
@@ -689,9 +639,6 @@ if (isset($_SESSION['user_id'])) {
             });
         });
 
-        /**
-         * Hover effect untuk process cards
-         */
         document.querySelectorAll('.process-card').forEach(card => {
             card.addEventListener('mouseenter', function() {
                 this.style.borderColor = 'var(--lampung-blue)';
@@ -701,15 +648,9 @@ if (isset($_SESSION['user_id'])) {
             });
         });
 
-        /**
-         * Console welcome message
-         */
         console.log('%c🎉 Selamat Datang di LampungSmart! ', 'background: #00308F; color: #FFD700; font-size: 20px; padding: 10px;');
         console.log('%cPlatform Good Governance Digital Provinsi Lampung', 'color: #009639; font-size: 14px;');
 
-        /**
-         * Prevent double form submission (untuk halaman selanjutnya)
-         */
         document.querySelectorAll('form').forEach(form => {
             form.addEventListener('submit', function(e) {
                 const submitBtn = this.querySelector('button[type="submit"]');
@@ -723,9 +664,6 @@ if (isset($_SESSION['user_id'])) {
             });
         });
 
-        /**
-         * Back to top button (smooth)
-         */
         const backToTopBtn = document.createElement('button');
         backToTopBtn.innerHTML = '<i class="bi bi-arrow-up-circle-fill"></i>';
         backToTopBtn.className = 'btn btn-primary position-fixed bottom-0 end-0 m-4 rounded-circle d-none';

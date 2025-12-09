@@ -29,7 +29,7 @@ session_start();
 </head>
 <body>
 
-    <?php include 'layout/navbar-landing.php'; ?>
+    <?php include '../layouts/navbar-landing.php'; ?>
 
     <!-- Hero Section -->
     <section class="hero-lampung" style="padding: 80px 0;">
@@ -266,7 +266,7 @@ session_start();
         </div>
     </section>
 
-    <?php include 'layout/footer-landing.php'; ?>
+    <?php include '../layouts/footer-landing.php'; ?>
 
     <!-- Rate Limit Modal -->
     <div class="modal fade" id="rateLimitModal" tabindex="-1" aria-labelledby="rateLimitModalLabel" aria-hidden="true">

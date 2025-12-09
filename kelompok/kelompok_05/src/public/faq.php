@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_question'])) {
 </head>
 <body>
 
-    <?php include 'layout/navbar-landing.php'; ?>
+    <?php include '../layouts/navbar-landing.php'; ?>
 
     <!-- Hero Section -->
     <section class="hero-lampung" style="padding: 80px 0;">
@@ -317,7 +317,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_question'])) {
         </div>
     </section>
 
-    <?php include 'layout/footer-landing.php'; ?>
+    <?php include '../layouts/footer-landing.php'; ?>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

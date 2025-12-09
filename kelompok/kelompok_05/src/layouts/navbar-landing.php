@@ -22,12 +22,12 @@
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'hubungi-kami.php') ? 'active' : ''; ?>" href="hubungi-kami.php">Hubungi Kami</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../backend/auth/login.php">
+                    <a class="nav-link" href="../auth/login.php">
                         <i class="bi bi-box-arrow-in-right"></i> Login
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn btn-warning text-dark px-3 ms-2 rounded" href="../backend/auth/register.php">
+                    <a class="nav-link btn btn-warning text-dark px-3 ms-2 rounded" href="../auth/register.php">
                         <i class="bi bi-person-plus"></i> Daftar
                     </a>
                 </li>
