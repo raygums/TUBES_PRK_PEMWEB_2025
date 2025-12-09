@@ -1,39 +1,18 @@
 <?php
-/**
- * Halaman Admin Cek dan Validasi Pengaduan
- * File: admin_pengaduan.php
- * Anggota: 2 - Fitur Pengaduan (Fullstack)
- * 
- * Fungsi:
- * - Menampilkan daftar semua pengaduan (untuk admin)
- * - Validasi dan verifikasi pengaduan
- * - Memberikan tanggapan pada pengaduan
- * - Update status pengaduan (pending -> proses -> selesai/ditolak)
- */
-
-// Mulai session
 session_start();
-
-// Cek apakah user sudah login
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../auth/login.php');
     exit;
 }
-
-// Cek role user (hanya admin yang bisa akses)
 if ($_SESSION['role'] !== 'admin') {
     header('Location: ../public/index.php');
     exit;
 }
-
-// Koneksi database
 require_once '../config/config.php';
-
-// Variabel untuk filter dan pencarian
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $filter_status = isset($_GET['status']) ? trim($_GET['status']) : '';
+$sort_by = isset($_GET['sort']) ? trim($_GET['sort']) : 'terbaru';
 
-// Proses update status pengaduan (AJAX)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     header('Content-Type: application/json');
     
@@ -57,8 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
         exit;
     }
-    
-    // Proses tambah tanggapan
     if ($_POST['action'] === 'add_response') {
         $pengaduan_id = intval($_POST['pengaduan_id'] ?? 0);
         $tanggapan = trim($_POST['tanggapan'] ?? '');
@@ -81,9 +58,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
         exit;
     }
+    if ($_POST['action'] === 'export_csv') {
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="pengaduan_' . date('Y-m-d') . '.csv"');
+        
+        $output = fopen('php://output', 'w');
+        fputcsv($output, ['ID', 'Judul', 'Warga', 'Email', 'Lokasi', 'Status', 'Tanggal'], ';');
+        
+        foreach ($pengaduan_list as $row) {
+            fputcsv($output, [
+                $row['id'],
+                $row['judul'],
+                $row['nama_warga'],
+                $row['email'],
+                $row['lokasi'],
+                $row['status'],
+                $row['created_at']
+            ], ';');
+        }
+        fclose($output);
+        exit;
+    }
 }
-
-// Query dasar untuk mendapatkan daftar pengaduan
 $query = "SELECT p.*, u.nama as nama_warga, u.email, COUNT(t.id) as jumlah_tanggapan 
           FROM pengaduan p 
           JOIN users u ON p.user_id = u.id 
@@ -91,33 +87,26 @@ $query = "SELECT p.*, u.nama as nama_warga, u.email, COUNT(t.id) as jumlah_tangg
           WHERE 1=1";
 $params = [];
 $types = '';
-
-// Tambahkan filter pencarian
 if (!empty($search)) {
     $query .= " AND (p.judul LIKE ? OR p.deskripsi LIKE ? OR u.nama LIKE ?)";
     $searchTerm = '%' . $search . '%';
     $params = [$searchTerm, $searchTerm, $searchTerm];
     $types = 'sss';
 }
-
-// Tambahkan filter status
 if (!empty($filter_status) && in_array($filter_status, ['pending', 'proses', 'selesai', 'ditolak'])) {
     $query .= " AND p.status = ?";
     $params[] = $filter_status;
     $types .= 's';
 }
+$query .= " GROUP BY p.id ORDER BY ";
 
-// Urutkan berdasarkan status pending dulu, kemudian tanggal terbaru
-$query .= " GROUP BY p.id 
-           ORDER BY 
-               CASE WHEN p.status = 'pending' THEN 1 
-                    WHEN p.status = 'proses' THEN 2 
-                    WHEN p.status = 'ditolak' THEN 3 
-                    ELSE 4 
-               END,
-               p.created_at DESC";
-
-// Eksekusi query
+if ($sort_by === 'oldest') {
+    $query .= "p.created_at ASC";
+} elseif ($sort_by === 'paling-dikomentar') {
+    $query .= "jumlah_tanggapan DESC, p.created_at DESC";
+} else {
+    $query .= "p.created_at DESC";
+}
 $stmt = $conn->prepare($query);
 if (!empty($params)) {
     $stmt->bind_param($types, ...$params);
@@ -130,8 +119,6 @@ while ($row = $result->fetch_assoc()) {
     $pengaduan_list[] = $row;
 }
 $stmt->close();
-
-// Statistik pengaduan
 $stats_query = "SELECT 
                 COUNT(*) as total,
                 SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending,
@@ -142,16 +129,12 @@ $stats_query = "SELECT
 $stats_result = $conn->query($stats_query);
 $stats = $stats_result->fetch_assoc();
 
-// Fungsi untuk format tanggal
 function format_tanggal($date) {
     $timestamp = strtotime($date);
-    // strftime() deprecated in PHP 8.1+, using date() instead with Indonesian locale
     $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
     $month_index = date('n', $timestamp) - 1;
     return date('d', $timestamp) . ' ' . $months[$month_index] . ' ' . date('Y H:i', $timestamp);
 }
-
-// Fungsi untuk menghitung waktu yang lalu
 function time_ago($date) {
     $timestamp = strtotime($date);
     $now = time();
@@ -170,7 +153,6 @@ function time_ago($date) {
     }
 }
 
-// Fungsi untuk badge status
 function get_status_badge($status) {
     switch ($status) {
         case 'pending':
@@ -192,15 +174,9 @@ function get_status_badge($status) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Validasi Pengaduan - LampungSmart</title>
-    
-    <!-- Bootstrap 5.3 CSS -->
+    <title>Admin - Validasi Pengaduan - LampungSmart</title>    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
-    <!-- LampungSmart Theme -->
     <link href="../assets/css/lampung-theme.css" rel="stylesheet">
     
     <style>
@@ -248,6 +224,12 @@ function get_status_badge($status) {
             text-align: center;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
             border-top: 4px solid var(--lampung-green);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
         
         .stat-card.pending {
@@ -283,6 +265,11 @@ function get_status_badge($status) {
         .filter-section {
             background: white;
             padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e0e0;
+        }
             border-radius: 10px;
             margin-bottom: 30px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
@@ -435,13 +422,149 @@ function get_status_badge($status) {
             max-height: 150px;
             border-radius: 5px;
             border: 1px solid #ddd;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .pengaduan-foto img:hover {
+            transform: scale(1.05);
         }
         
         .status-selector {
             margin-bottom: 15px;
         }
         
-        .status-selector label {
+        .toolbar-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .btn-export {
+            background-color: var(--lampung-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-export:hover {
+            background-color: #007a2f;
+            transform: translateY(-2px);
+        }
+        
+        .sort-selector {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: white;
+        }
+        
+        .stats-trend {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+            font-size: 11px;
+        }
+        
+        .stats-trend .trend-up {
+            color: #28a745;
+        }
+        
+        .stats-trend .trend-down {
+            color: var(--lampung-red);
+        }
+        
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid var(--lampung-green);
+        }
+        
+        .toast-notification.success {
+            border-left-color: #28a745;
+        }
+        
+        .toast-notification.error {
+            border-left-color: var(--lampung-red);
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .pagination-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .pagination-section .info {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        
+        .card-actions button {
+            padding: 8px 16px;
+            font-size: 13px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .card-actions .btn-primary {
+            background-color: var(--lampung-blue);
+            color: white;
+        }
+        
+        .card-actions .btn-primary:hover {
+            background-color: #002060;
+            transform: translateY(-2px);
+        }
+        
+        .card-actions .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .card-actions .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }.status-selector label {
             font-size: 13px;
             font-weight: 600;
             color: var(--lampung-charcoal);
@@ -572,7 +695,6 @@ function get_status_badge($status) {
 </head>
 <body>
     <?php include '../layouts/header.php'; ?>
-    <!-- Page Header -->
     <div class="page-header">
         <div class="container">
             <div class="row">
@@ -586,7 +708,6 @@ function get_status_badge($status) {
     
     <div class="container">
         
-        <!-- Statistics Section -->
         <div class="stats-section">
             <div class="stat-card">
                 <i class="bi bi-chat-dots" style="font-size: 24px; color: var(--lampung-green);"></i>
@@ -615,10 +736,9 @@ function get_status_badge($status) {
             </div>
         </div>
         
-        <!-- Filter Section -->
         <div class="filter-section">
             <form method="GET" class="row g-3">
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <label for="search" class="form-label">Cari Pengaduan</label>
                     <input 
                         type="text" 
@@ -629,7 +749,7 @@ function get_status_badge($status) {
                         value="<?php echo htmlspecialchars($search); ?>">
                 </div>
                 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="status" class="form-label">Filter Status</label>
                     <select class="form-select" id="status" name="status">
                         <option value="">Semua Status</option>
@@ -640,7 +760,16 @@ function get_status_badge($status) {
                     </select>
                 </div>
                 
-                <div class="col-md-2 d-flex gap-2">
+                <div class="col-md-3">
+                    <label for="sort" class="form-label">Urutkan</label>
+                    <select class="form-select" id="sort" name="sort">
+                        <option value="terbaru" <?php echo $sort_by === 'terbaru' ? 'selected' : ''; ?>>Terbaru</option>
+                        <option value="oldest" <?php echo $sort_by === 'oldest' ? 'selected' : ''; ?>>Terlama</option>
+                        <option value="paling-dikomentar" <?php echo $sort_by === 'paling-dikomentar' ? 'selected' : ''; ?>>Paling Dikomentari</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-2 d-flex gap-2 align-items-end">
                     <button type="submit" class="btn btn-filter flex-grow-1">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
@@ -649,28 +778,36 @@ function get_status_badge($status) {
                     </a>
                 </div>
             </form>
+            
+            <div class="toolbar-section" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+                <form method="POST" style="display: inline;">
+                    <input type="hidden" name="action" value="export_csv">
+                    <button type="submit" class="btn-export">
+                        <i class="bi bi-download"></i> Export CSV
+                    </button>
+                </form>
+                <div style="font-size: 13px; color: #666;">
+                    Total: <strong><?php echo count($pengaduan_list); ?></strong> pengaduan
+                </div>
+            </div>
         </div>
         
-        <!-- Daftar Pengaduan -->
         <?php if (count($pengaduan_list) > 0): ?>
             <div class="pengaduan-list">
                 <?php foreach ($pengaduan_list as $pengaduan): ?>
                     <div class="pengaduan-card <?php echo $pengaduan['status']; ?>">
                         
-                        <!-- Header -->
                         <div class="pengaduan-header">
                             <h5><?php echo htmlspecialchars($pengaduan['judul']); ?></h5>
                             <?php echo get_status_badge($pengaduan['status']); ?>
                         </div>
                         
-                        <!-- Info Warga -->
                         <div class="pengaduan-warga">
                             <i class="bi bi-person-circle"></i>
                             <?php echo htmlspecialchars($pengaduan['nama_warga']); ?> 
                             (<?php echo htmlspecialchars($pengaduan['email']); ?>)
                         </div>
                         
-                        <!-- Meta Info -->
                         <div class="pengaduan-meta">
                             <div>
                                 <i class="bi bi-calendar"></i>
@@ -686,27 +823,23 @@ function get_status_badge($status) {
                             </div>
                         </div>
                         
-                        <!-- Lokasi -->
                         <div class="pengaduan-lokasi">
                             <i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($pengaduan['lokasi']); ?>
                         </div>
                         
-                        <!-- Deskripsi -->
                         <div style="color: #555; line-height: 1.6; margin-bottom: 15px; font-size: 14px;">
                             <strong>Deskripsi:</strong>
                             <br><?php echo htmlspecialchars(substr($pengaduan['deskripsi'], 0, 300)); ?>
                             <?php if (strlen($pengaduan['deskripsi']) > 300): ?>...<?php endif; ?>
                         </div>
                         
-                        <!-- Foto -->
                         <?php if (!empty($pengaduan['foto'])): ?>
                             <div class="pengaduan-foto">
                                 <strong style="display: block; margin-bottom: 8px; font-size: 13px;">Foto Pendukung:</strong>
-                                <img src="../../../uploads/pengaduan/<?php echo htmlspecialchars($pengaduan['foto']); ?>" alt="Foto Pengaduan">
+                                <img src="../../../uploads/pengaduan/<?php echo htmlspecialchars($pengaduan['foto']); ?>" alt="Foto Pengaduan" onclick="showPhotoModal(this)">
                             </div>
                         <?php endif; ?>
                         
-                        <!-- Update Status -->
                         <div class="status-selector">
                             <label>Update Status:</label>
                             <div class="input-group">
@@ -723,7 +856,6 @@ function get_status_badge($status) {
                             </div>
                         </div>
                         
-                        <!-- Tanggapan Section -->
                         <div class="response-section">
                             <label for="response-<?php echo $pengaduan['id']; ?>">Berikan Tanggapan:</label>
                             <textarea 
@@ -740,7 +872,6 @@ function get_status_badge($status) {
                                 <i class="bi bi-send-fill"></i> Kirim Tanggapan
                             </button>
                             
-                            <!-- Response List -->
                             <?php if ($pengaduan['jumlah_tanggapan'] > 0): ?>
                                 <div class="response-list">
                                     <?php 
@@ -774,7 +905,6 @@ function get_status_badge($status) {
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <!-- Empty State -->
             <div class="empty-state">
                 <i class="bi bi-inbox"></i>
                 <h4>Belum Ada Pengaduan</h4>
@@ -786,11 +916,23 @@ function get_status_badge($status) {
     
     <?php include '../layouts/footer.php'; ?>
     
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Character counter untuk tanggapan
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast-notification ${type}`;
+            toast.innerHTML = `
+                <strong>${type === 'success' ? '✓ Sukses' : '✗ Error'}</strong>
+                <p style="margin: 5px 0 0 0;">${message}</p>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+        
         document.querySelectorAll('.response-textarea').forEach(textarea => {
             textarea.addEventListener('input', function() {
                 const count = this.value.length;
@@ -798,13 +940,12 @@ function get_status_badge($status) {
             });
         });
         
-        // Update status via AJAX
         function updateStatus(pengaduanId) {
             const dropdown = document.querySelector(`.status-dropdown[data-id="${pengaduanId}"]`);
             const newStatus = dropdown.value;
             
             if (!newStatus) {
-                alert('Pilih status terlebih dahulu');
+                showToast('Pilih status terlebih dahulu', 'error');
                 return;
             }
             
@@ -820,25 +961,24 @@ function get_status_badge($status) {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Status berhasil diperbarui!');
-                    location.reload();
+                    showToast('Status berhasil diperbarui!');
+                    setTimeout(() => location.reload(), 1000);
                 } else {
-                    alert('Error: ' + data.message);
+                    showToast(data.message, 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Terjadi kesalahan saat mengubah status');
+                showToast('Terjadi kesalahan saat mengubah status', 'error');
             });
         }
         
-        // Add response via AJAX
         function addResponse(pengaduanId) {
             const textarea = document.getElementById(`response-${pengaduanId}`);
             const tanggapan = textarea.value.trim();
             
             if (tanggapan.length < 10) {
-                alert('Tanggapan minimal 10 karakter');
+                showToast('Tanggapan minimal 10 karakter', 'error');
                 return;
             }
             
@@ -854,17 +994,76 @@ function get_status_badge($status) {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Tanggapan berhasil ditambahkan!');
+                    showToast('Tanggapan berhasil ditambahkan!');
                     textarea.value = '';
-                    location.reload();
+                    setTimeout(() => location.reload(), 1000);
                 } else {
-                    alert('Error: ' + data.message);
+                    showToast(data.message, 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Terjadi kesalahan saat menambahkan tanggapan');
+                showToast('Terjadi kesalahan saat menambahkan tanggapan', 'error');
             });
+        }
+        
+        function showPhotoModal(imgElement) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+            `;
+            
+            const imgContainer = document.createElement('div');
+            imgContainer.style.cssText = `
+                position: relative;
+                max-width: 90%;
+                max-height: 90%;
+            `;
+            
+            const img = document.createElement('img');
+            img.src = imgElement.src;
+            img.style.cssText = `
+                max-width: 100%;
+                max-height: 100%;
+                border-radius: 8px;
+            `;
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.style.cssText = `
+                position: absolute;
+                top: -30px;
+                right: 0;
+                background: white;
+                border: none;
+                font-size: 28px;
+                cursor: pointer;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            
+            closeBtn.onclick = () => modal.remove();
+            modal.onclick = (e) => {
+                if (e.target === modal) modal.remove();
+            };
+            
+            imgContainer.appendChild(img);
+            imgContainer.appendChild(closeBtn);
+            modal.appendChild(imgContainer);
+            document.body.appendChild(modal);
         }
     </script>
 </body>
