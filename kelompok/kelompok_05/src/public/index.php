@@ -14,45 +14,38 @@ if (isset($_SESSION['user_id'])) {
     header("Location: profile.php");
     exit();
 }
-
-require '../frontend/layout/header.html';
-
 ?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LampungSmart - Platform Good Governance digital terintegrasi untuk melayani masyarakat Lampung dalam pelaporan infrastruktur dan perizinan UMKM">
+    <meta name="keywords" content="lampung smart, good governance, pengaduan infrastruktur, perizinan umkm, pemerintah lampung">
+    <meta name="author" content="Pemerintah Provinsi Lampung">
+    <title>LampungSmart - Platform Digital Good Governance Provinsi Lampung</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- LampungSmart Theme (Tema Resmi Provinsi Lampung) -->
+    <link href="../assets/css/lampung-theme.css" rel="stylesheet">
+    
+    <!-- Landing Page Custom Styles -->
+    <link href="../assets/css/landing-page.css" rel="stylesheet">
+    
+    <!-- Logo Navbar Styles -->
+    <link href="../assets/css/logo-navbar.css" rel="stylesheet">
+    
+    <!-- Dashboard & Voting Widget Styles -->
+    <link href="../assets/css/dashboard-voting.css" rel="stylesheet">
+</head>
+<body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-lampung sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">
-                <img src="../assets/images/logo-lampung.png" alt="Logo Lampung" class="logo-lampung-navbar"> LampungSmart
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#tentang">Tentang</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#layanan">Layanan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#cara-kerja">Cara Kerja</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../backend/auth/login.php">
-                            <i class="bi bi-box-arrow-in-right"></i> Login
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-warning text-dark px-3 ms-2 rounded" href="../backend/auth/register.php">
-                            <i class="bi bi-person-plus"></i> Daftar Sekarang
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php include 'layout/navbar-landing.php'; ?>
 
     <!-- Hero Section -->
     <section class="hero-lampung">
@@ -72,7 +65,7 @@ require '../frontend/layout/header.html';
                     transparan, dan responsif dalam melayani kebutuhan infrastruktur dan perizinan UMKM.
                 </p>
                 <div class="mt-5">
-                    <a href="../backend/auth/register.php" class="btn btn-warning btn-lg me-3 shadow-lampung-md">
+                    <a href="../auth/register.php" class="btn btn-warning btn-lg me-3 shadow-lampung-md">
                         <i class="bi bi-person-plus-fill"></i> Daftar Gratis
                     </a>
                     <a href="#tentang" class="btn btn-outline-light btn-lg shadow-lampung-sm">
@@ -544,110 +537,6 @@ require '../frontend/layout/header.html';
         </div>
     </section>
 
-    <!-- FAQ Section -->
-    <section class="py-5 bg-white">
-        <div class="container">
-            <div class="row mb-5">
-                <div class="col-lg-8 mx-auto text-center">
-                    <h2 class="section-title">Pertanyaan Umum (FAQ)</h2>
-                    <p class="section-subtitle">
-                        Jawaban untuk pertanyaan yang sering diajukan
-                    </p>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <div class="accordion" id="faqAccordion">
-                        <!-- FAQ 1 -->
-                        <div class="accordion-item mb-3 border-0 shadow-lampung-sm">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                    <i class="bi bi-question-circle text-lampung-blue me-2"></i>
-                                    Apakah LampungSmart gratis?
-                                </button>
-                            </h2>
-                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Ya, seluruh layanan LampungSmart 100% gratis untuk semua masyarakat Lampung. 
-                                    Tidak ada biaya pendaftaran, biaya langganan, atau biaya tersembunyi lainnya.
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- FAQ 2 -->
-                        <div class="accordion-item mb-3 border-0 shadow-lampung-sm">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                                    <i class="bi bi-question-circle text-lampung-blue me-2"></i>
-                                    Siapa yang bisa menggunakan platform ini?
-                                </button>
-                            </h2>
-                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Semua warga Lampung yang berusia minimal 17 tahun dan memiliki KTP dapat 
-                                    mendaftar dan menggunakan layanan LampungSmart. Untuk UMKM, Anda harus 
-                                    memiliki usaha yang berdomisili di Lampung.
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- FAQ 3 -->
-                        <div class="accordion-item mb-3 border-0 shadow-lampung-sm">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                                    <i class="bi bi-question-circle text-lampung-blue me-2"></i>
-                                    Berapa lama proses pengaduan ditindaklanjuti?
-                                </button>
-                            </h2>
-                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Pengaduan akan diverifikasi maksimal 2x24 jam. Setelah verifikasi, 
-                                    pengaduan akan diteruskan ke instansi terkait dan proses penyelesaian 
-                                    bergantung pada tingkat urgensi dan kompleksitas masalah (biasanya 3-14 hari kerja).
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- FAQ 4 -->
-                        <div class="accordion-item mb-3 border-0 shadow-lampung-sm">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-                                    <i class="bi bi-question-circle text-lampung-blue me-2"></i>
-                                    Apa saja dokumen yang diperlukan untuk perizinan UMKM?
-                                </button>
-                            </h2>
-                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Dokumen yang diperlukan bervariasi tergantung jenis izin. Umumnya meliputi: 
-                                    KTP, NPWP, Surat Keterangan Domisili Usaha, dan dokumen pendukung lainnya. 
-                                    Daftar lengkap akan ditampilkan saat Anda memilih jenis izin yang diajukan.
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- FAQ 5 -->
-                        <div class="accordion-item mb-3 border-0 shadow-lampung-sm">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
-                                    <i class="bi bi-question-circle text-lampung-blue me-2"></i>
-                                    Apakah data saya aman?
-                                </button>
-                            </h2>
-                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Keamanan data adalah prioritas kami. Semua data dienkripsi dan disimpan di 
-                                    server yang aman. Kami mematuhi undang-undang perlindungan data pribadi dan 
-                                    tidak akan membagikan informasi Anda kepada pihak ketiga tanpa persetujuan Anda.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Final CTA -->
     <section class="py-5 bg-lampung-gradient-primary text-white">
         <div class="container">
@@ -659,10 +548,10 @@ require '../frontend/layout/header.html';
                         dan transparansi dalam pelayanan publik
                     </p>
                     <div class="d-flex justify-content-center gap-3 flex-wrap">
-                        <a href="../backend/auth/register.php" class="btn btn-warning btn-lg shadow-lampung-lg">
+                        <a href="../auth/register.php" class="btn btn-warning btn-lg shadow-lampung-lg">
                             <i class="bi bi-person-plus-fill"></i> Daftar Sekarang
                         </a>
-                        <a href="../backend/auth/login.php" class="btn btn-outline-light btn-lg">
+                        <a href="../auth/login.php" class="btn btn-outline-light btn-lg">
                             <i class="bi bi-box-arrow-in-right"></i> Sudah Punya Akun? Login
                         </a>
                     </div>
@@ -671,87 +560,7 @@ require '../frontend/layout/header.html';
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer-lampung">
-        <div class="container">
-            <div class="row mb-4">
-                <div class="col-lg-4 mb-4 mb-lg-0">
-                    <h5 class="text-lampung-gold mb-3">
-                        <i class="bi bi-geo-alt-fill"></i> LampungSmart
-                    </h5>
-                    <p class="mb-3">
-                        Platform Good Governance digital terintegrasi untuk melayani masyarakat Lampung 
-                        dalam pelaporan infrastruktur dan perizinan UMKM secara transparan dan efisien.
-                    </p>
-                    <div class="d-flex gap-3">
-                        <a href="#" class="text-white fs-4"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-white fs-4"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="text-white fs-4"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="text-white fs-4"><i class="bi bi-youtube"></i></a>
-                    </div>
-                </div>
-                
-                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
-                    <h5 class="text-lampung-gold mb-3">Navigasi</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#tentang">Tentang Kami</a></li>
-                        <li class="mb-2"><a href="#layanan">Layanan</a></li>
-                        <li class="mb-2"><a href="#cara-kerja">Cara Kerja</a></li>
-                        <li class="mb-2"><a href="../backend/auth/login.php">Login</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                    <h5 class="text-lampung-gold mb-3">Layanan</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#">Pengaduan Infrastruktur</a></li>
-                        <li class="mb-2"><a href="#">Perizinan UMKM</a></li>
-                        <li class="mb-2"><a href="#">FAQ</a></li>
-                        <li class="mb-2"><a href="#">Hubungi Kami</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-lampung-gold mb-3">Kontak</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">
-                            <i class="bi bi-envelope me-2"></i>
-                            <a href="mailto:admin@lampungsmart.go.id">admin@lampungsmart.go.id</a>
-                        </li>
-                        <li class="mb-2">
-                            <i class="bi bi-telephone me-2"></i>
-                            <a href="tel:0721123456">0721-123456</a>
-                        </li>
-                        <li class="mb-2">
-                            <i class="bi bi-whatsapp me-2"></i>
-                            <a href="https://wa.me/6282112345678">0821-1234-5678</a>
-                        </li>
-                        <li class="mb-2">
-                            <i class="bi bi-building me-2"></i>
-                            Pemerintah Provinsi Lampung
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <hr class="border-secondary opacity-25">
-            
-            <div class="row">
-                <div class="col-md-6 mb-3 mb-md-0">
-                    <p class="mb-0 small opacity-75">
-                        &copy; <?php echo date('Y'); ?> LampungSmart. All Rights Reserved.
-                    </p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <p class="mb-0 small opacity-75">
-                        <a href="#" class="text-white me-3">Kebijakan Privasi</a>
-                        <a href="#" class="text-white me-3">Syarat & Ketentuan</a>
-                        <a href="#" class="text-white">Sitemap</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <?php include 'layout/footer-landing.php'; ?>
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -940,5 +749,6 @@ require '../frontend/layout/header.html';
             });
         });
     </script>
+
 </body>
 </html>

@@ -9,8 +9,8 @@ $total_laporan = 0;
 $total_umkm = 0;
 $status_akun = "Terverifikasi"; 
 
-require '../frontend/layout/header.html';
-require '../frontend/layout/sidebar.php';
+require __DIR__ . '/../layouts/header.php';
+require __DIR__ . '/../layouts/sidebar.php';
 ?>
 
 <div class="d-flex justify-content-between align-items-end mb-5">
@@ -102,7 +102,7 @@ require '../frontend/layout/sidebar.php';
                     dan dapatkan kemudahan izin.
                 </p>
                 
-                <a href="umkm_daftar.php" class="btn btn-outline-primary fw-bold px-4 py-2">
+                <a href="../umkm/daftar_umkm.php" class="btn btn-outline-primary fw-bold px-4 py-2">
                     <i class="fas fa-file-signature me-2"></i> Daftar Sekarang
                 </a>
 
@@ -135,7 +135,7 @@ require '../frontend/layout/sidebar.php';
                         </p>
                     </div>
                     <div class="col-md-3 text-end">
-                        <a href="../frontend/profile.php" class="btn btn-primary fw-bold px-4 py-2">
+                        <a href="../profile/profile.php" class="btn btn-primary fw-bold px-4 py-2">
                             <i class="fas fa-user-edit me-2"></i> Lihat Profil
                         </a>
                     </div>
@@ -150,5 +150,5 @@ require '../frontend/layout/sidebar.php';
 </div>
 
 <?php
-require '../frontend/layout/footer.html';
+require __DIR__ . '/../layouts/footer.php';
 ?>

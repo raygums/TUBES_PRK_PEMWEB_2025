@@ -1,12 +1,12 @@
 <?php
 session_start();
-require '../config.php';
+require '../config/config.php';
 
 if (isset($_SESSION['login'])) {
     if ($_SESSION['role'] == 'admin') {
-        header("Location: ../dashboard_admin.php");
+        header("Location: ../dashboard/dashboard_admin.php");
     } else {
-        header("Location: ../dashboard_warga.php");
+        header("Location: ../dashboard/dashboard_warga.php");
     }
     exit;
 }
@@ -27,11 +27,12 @@ if (isset($_POST['login'])) {
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['nama'] = $row['nama'];
             $_SESSION['role'] = $row['role'];
+            $_SESSION['profile_photo'] = $row['profile_photo'] ?? 'default.jpg'; // Simpan foto profil ke session
 
             if ($row['role'] == 'admin') {
-                header("Location: ../dashboard_admin.php");
+                header("Location: ../dashboard/dashboard_admin.php");
             } else {
-                header("Location: ../dashboard_warga.php");
+                header("Location: ../dashboard/dashboard_warga.php");
             }
             exit;
         }
@@ -48,7 +49,8 @@ if (isset($_POST['login'])) {
     <title>Login - LampungSmart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <link rel="stylesheet" href="../../frontend/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/logo-navbar.css">
 </head>
 
 <body class="bg-auth"> 
@@ -59,6 +61,7 @@ if (isset($_POST['login'])) {
                 <div class="card card-login p-4 p-md-5 bg-white">
                     <div class="card-body px-0">
                         <div class="text-center mb-5">
+                            <img src="../assets/images/logo-lampung.png" alt="Logo Lampung" class="logo-lampung-sidebar"> 
                             <h3 class="fw-bold text-brand-primary">LampungSmart</h3>
                             <p class="text-muted">Masuk untuk mengakses layanan</p>
                         </div>

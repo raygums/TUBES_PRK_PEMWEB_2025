@@ -12,12 +12,12 @@ session_start();
 
 // Cek apakah user sudah login dan memiliki role warga
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'warga') {
-    header("Location: ../backend/auth/login.php?error=access_denied");
+    header("Location: ../auth/login.php?error=access_denied");
     exit();
 }
 
 // Include config untuk koneksi database
-require_once '../backend/config.php';
+require_once '../config/config.php';
 
 // Generate CSRF token jika belum ada
 if (!isset($_SESSION['csrf_token'])) {
@@ -42,7 +42,7 @@ $stmt->close();
 // Jika user tidak ditemukan (seharusnya tidak mungkin terjadi)
 if (!$user) {
     session_destroy();
-    header("Location: ../backend/auth/login.php?error=user_not_found");
+    header("Location: ../auth/login.php?error=user_not_found");
     exit();
 }
 
@@ -130,6 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['success_message'] = "Profil berhasil diperbarui!";
             // Update data user di session
             $_SESSION['nama'] = $nama;
+            $_SESSION['profile_photo'] = $profile_photo; // Update foto di session
             $user['nama'] = $nama;
             $user['profile_photo'] = $profile_photo;
         } else {
@@ -229,7 +230,7 @@ $activities = [
 ];
 ?>
 <?php
-require '../frontend/layout/header.html';
+require __DIR__ . '/layout/header.php';
 ?>
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -240,7 +241,7 @@ require '../frontend/layout/header.html';
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/css/profile-custom.css">
 <?php
-require '../frontend/layout/sidebar.php';
+require __DIR__ . '/layout/sidebar.php';
 ?>
 
     <!-- Profile Header -->
@@ -649,5 +650,5 @@ require '../frontend/layout/sidebar.php';
     </script>
 
 <?php
-require '../frontend/layout/footer.html';
+require __DIR__ . '/layout/footer.php';
 ?>

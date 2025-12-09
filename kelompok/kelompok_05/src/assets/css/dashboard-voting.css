@@ -1,0 +1,290 @@
+/**
+ * dashboard-voting.css
+ * Styles for public dashboard and voting widget
+ * Mobile-First | WCAG 2.2 AA | Reduced Motion Support
+ */
+
+/* ========================================================================
+   PUBLIC DASHBOARD SECTION
+   ======================================================================== */
+
+.response-gauge-container {
+    margin: 0 auto;
+}
+
+.response-gauge {
+    transform: rotate(-90deg);
+}
+
+.pulse-lampung {
+    animation: pulseLampung 0.6s ease-out;
+}
+
+@keyframes pulseLampung {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .pulse-lampung {
+        animation: none !important;
+    }
+}
+
+/* ========================================================================
+   VOTING WIDGET SECTION
+   ======================================================================== */
+
+.voting-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.voting-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="2" fill="%23e9ecef"/></svg>');
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.complaint-card {
+    background: #ffffff;
+    border-radius: var(--radius-md, 10px);
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.complaint-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .complaint-card {
+        transition: none !important;
+    }
+    
+    .complaint-card:hover {
+        transform: none;
+    }
+}
+
+.complaint-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.complaint-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.complaint-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #6c757d;
+    margin-bottom: 16px;
+    flex-grow: 1;
+}
+
+.complaint-location {
+    font-size: 0.85rem;
+    color: #adb5bd;
+    margin-bottom: 16px;
+}
+
+.vote-btn {
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.vote-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+}
+
+.vote-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.vote-btn:focus-visible {
+    outline: 3px solid var(--lampung-gold, #FFD700);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vote-btn:hover:not(:disabled) {
+        transform: none;
+    }
+}
+
+.vote-count-badge {
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: transform 0.15s ease;
+}
+
+.scale-up {
+    animation: scaleUp 0.3s ease;
+}
+
+@keyframes scaleUp {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scale-up {
+        animation: none !important;
+    }
+}
+
+/* ========================================================================
+   RESPONSIVE DESIGN
+   ======================================================================== */
+
+/* Mobile First (320px+) */
+@media (min-width: 320px) {
+    .complaint-card {
+        padding: 16px;
+    }
+    
+    .complaint-title {
+        font-size: 1rem;
+    }
+    
+    .vote-btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .vote-count-badge {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Tablet (768px+) */
+@media (min-width: 768px) {
+    .complaint-card {
+        padding: 20px;
+    }
+    
+    .complaint-title {
+        font-size: 1.05rem;
+    }
+    
+    .vote-btn {
+        width: auto;
+        margin-bottom: 0;
+    }
+    
+    .vote-count-badge {
+        width: auto;
+    }
+}
+
+/* Desktop (992px+) */
+@media (min-width: 992px) {
+    .complaint-card {
+        padding: 24px;
+    }
+    
+    .complaint-title {
+        font-size: 1.1rem;
+    }
+}
+
+/* ========================================================================
+   ACCESSIBILITY ENHANCEMENTS
+   ======================================================================== */
+
+/* Visually hidden but accessible to screen readers */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .complaint-card {
+        border: 2px solid currentColor;
+    }
+    
+    .vote-btn {
+        border: 2px solid currentColor;
+    }
+}
+
+/* Focus indicators for keyboard navigation */
+.complaint-card:focus-within {
+    outline: 2px solid var(--lampung-blue, #00308F);
+    outline-offset: 4px;
+}
+
+/* ========================================================================
+   ALERT COMPONENT
+   ======================================================================== */
+
+.alert-lampung-info {
+    background-color: #e3f2fd;
+    border: 1px solid #90caf9;
+    border-radius: 8px;
+    padding: 16px;
+    color: #1565c0;
+}
+
+.border-left-lampung-blue {
+    border-left: 4px solid var(--lampung-blue, #00308F) !important;
+}
+
+/* ========================================================================
+   PRINT STYLES
+   ======================================================================== */
+
+@media print {
+    .voting-section,
+    .vote-btn {
+        display: none;
+    }
+}
