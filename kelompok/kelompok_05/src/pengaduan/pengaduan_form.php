@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors[] = "Extension file tidak diizinkan untuk keamanan";
             }
             if (empty($errors)) {
-                $upload_dir = '../../uploads/pengaduan/';
+                $upload_dir = '../assets/uploads/pengaduan/';
                 if (!is_dir($upload_dir)) {
                     @mkdir($upload_dir, 0755, true);
                 }

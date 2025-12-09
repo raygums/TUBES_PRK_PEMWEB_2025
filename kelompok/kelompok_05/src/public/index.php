@@ -445,7 +445,7 @@ if (isset($_SESSION['user_id'])) {
                 <div class="row mt-5">
                     <div class="col-12 text-center">
                         <h3 class="mb-4">Siap Berkontribusi untuk Lampung yang Lebih Baik?</h3>
-                        <a href="../backend/auth/register.php" class="btn btn-warning btn-lg shadow-lampung-lg">
+                        <a href="../auth/register.php" class="btn btn-warning btn-lg shadow-lampung-lg">
                             <i class="bi bi-rocket-takeoff-fill"></i> Mulai Sekarang Gratis
                         </a>
                     </div>

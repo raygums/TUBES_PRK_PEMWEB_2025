@@ -31,10 +31,10 @@
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                 <h5 class="text-lampung-gold mb-3">Layanan</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><a href="../backend/dashboard_warga.php">Pengaduan Infrastruktur</a></li>
-                    <li class="mb-2"><a href="../backend/dashboard_warga.php">Perizinan UMKM</a></li>
-                    <li class="mb-2"><a href="../backend/auth/login.php">Login</a></li>
-                    <li class="mb-2"><a href="../backend/auth/register.php">Daftar</a></li>
+                    <li class="mb-2"><a href="../dashboard/dashboard_warga.php">Pengaduan Infrastruktur</a></li>
+                    <li class="mb-2"><a href="../dashboard/dashboard_warga.php">Perizinan UMKM</a></li>
+                    <li class="mb-2"><a href="../auth/login.php">Login</a></li>
+                    <li class="mb-2"><a href="../auth/register.php">Daftar</a></li>
                 </ul>
             </div>
             

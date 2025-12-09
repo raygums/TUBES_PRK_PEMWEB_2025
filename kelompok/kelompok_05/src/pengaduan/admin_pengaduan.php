@@ -702,7 +702,7 @@ function get_status_badge($status) {
                         <?php if (!empty($pengaduan['foto'])): ?>
                             <div class="pengaduan-foto">
                                 <strong style="display: block; margin-bottom: 8px; font-size: 13px;">Foto Pendukung:</strong>
-                                <img src="../../../uploads/pengaduan/<?php echo htmlspecialchars($pengaduan['foto']); ?>" alt="Foto Pengaduan">
+                                <img src="../assets/uploads/pengaduan/<?php echo htmlspecialchars($pengaduan['foto']); ?>" alt="Foto Pengaduan">
                             </div>
                         <?php endif; ?>
                         

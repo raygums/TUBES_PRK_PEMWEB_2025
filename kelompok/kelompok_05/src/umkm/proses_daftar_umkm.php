@@ -19,12 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // VALIDASI ANGKA TELEPON
     if (!ctype_digit($no_telepon)) {
-        header("Location: ../frontend/daftar_umkm.php?error=Nomor telepon harus angka");
+        header("Location: daftar_umkm.php?error=Nomor telepon harus angka");
         exit;
     }
 
     if (strlen($no_telepon) < 10) {
-        header("Location: ../frontend/daftar_umkm.php?error=Nomor telepon minimal 10 digit");
+        header("Location: daftar_umkm.php?error=Nomor telepon minimal 10 digit");
         exit;
     }
 
@@ -36,10 +36,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
               VALUES ('$user_id', '$nama_usaha', '$bidang_usaha', '$alamat_usaha', '$nama_pemilik', '$no_telepon')";
 
     if (mysqli_query($conn, $query)) {
-        header("Location: ../frontend/daftar_umkm.php?success=Pendaftaran UMKM berhasil!");
+        header("Location: daftar_umkm.php?success=Pendaftaran UMKM berhasil!");
         exit;
     } else {
-        header("Location: ../frontend/daftar_umkm.php?error=Gagal menyimpan data: " . mysqli_error($conn));
+        header("Location: daftar_umkm.php?error=Gagal menyimpan data: " . mysqli_error($conn));
         exit;
     }
 }

@@ -514,7 +514,7 @@ function get_status_badge($status) {
                         </div>
                         <?php if (!empty($pengaduan['foto'])): ?>
                             <div class="pengaduan-foto">
-                                <img src="../../uploads/pengaduan/<?php echo htmlspecialchars($pengaduan['foto']); ?>" alt="Foto Pengaduan">
+                                <img src="../assets/uploads/pengaduan/<?php echo htmlspecialchars($pengaduan['foto']); ?>" alt="Foto Pengaduan">
                             </div>
                         <?php endif; ?>
 
