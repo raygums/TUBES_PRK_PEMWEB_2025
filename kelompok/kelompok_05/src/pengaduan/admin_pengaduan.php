@@ -16,18 +16,18 @@ session_start();
 
 // Cek apakah user sudah login
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ../backend/auth/login.php');
+    header('Location: ../auth/login.php');
     exit;
 }
 
 // Cek role user (hanya admin yang bisa akses)
 if ($_SESSION['role'] !== 'admin') {
-    header('Location: ../frontend/index.php');
+    header('Location: ../public/index.php');
     exit;
 }
 
 // Koneksi database
-require_once '../backend/config.php';
+require_once '../config/config.php';
 
 // Variabel untuk filter dan pencarian
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
@@ -145,8 +145,10 @@ $stats = $stats_result->fetch_assoc();
 // Fungsi untuk format tanggal
 function format_tanggal($date) {
     $timestamp = strtotime($date);
-    setlocale(LC_TIME, 'id_ID.UTF-8');
-    return strftime('%d %B %Y %H:%M', $timestamp);
+    // strftime() deprecated in PHP 8.1+, using date() instead with Indonesian locale
+    $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    $month_index = date('n', $timestamp) - 1;
+    return date('d', $timestamp) . ' ' . $months[$month_index] . ' ' . date('Y H:i', $timestamp);
 }
 
 // Fungsi untuk menghitung waktu yang lalu
@@ -199,7 +201,7 @@ function get_status_badge($status) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <!-- LampungSmart Theme -->
-    <link href="../../assets/css/lampung-theme.css" rel="stylesheet">
+    <link href="../assets/css/lampung-theme.css" rel="stylesheet">
     
     <style>
         :root {
@@ -569,7 +571,7 @@ function get_status_badge($status) {
     </style>
 </head>
 <body>
-    <?php include '../frontend/layout/header.html'; ?>
+    <?php include '../layouts/header.php'; ?>
     <!-- Page Header -->
     <div class="page-header">
         <div class="container">
@@ -700,7 +702,7 @@ function get_status_badge($status) {
                         <?php if (!empty($pengaduan['foto'])): ?>
                             <div class="pengaduan-foto">
                                 <strong style="display: block; margin-bottom: 8px; font-size: 13px;">Foto Pendukung:</strong>
-                                <img src="../../uploads/pengaduan/<?php echo htmlspecialchars($pengaduan['foto']); ?>" alt="Foto Pengaduan">
+                                <img src="../../../uploads/pengaduan/<?php echo htmlspecialchars($pengaduan['foto']); ?>" alt="Foto Pengaduan">
                             </div>
                         <?php endif; ?>
                         
@@ -782,7 +784,7 @@ function get_status_badge($status) {
         
     </div>
     
-    <?php include '../frontend/layout/footer.html'; ?>
+    <?php include '../layouts/footer.php'; ?>
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
