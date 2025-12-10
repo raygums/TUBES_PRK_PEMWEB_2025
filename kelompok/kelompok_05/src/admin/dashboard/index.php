@@ -1,27 +1,19 @@
 <?php
-/**
- * Admin Dashboard - Halaman Utama
- * Menampilkan overview dan statistik pengaduan, UMKM, dan users
- */
-
 session_start();
 
-// Cek apakah user sudah login
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../../auth/login.php');
     exit;
 }
 
-// Cek role user (hanya admin yang bisa akses)
 if ($_SESSION['role'] !== 'admin') {
     header('Location: ../../public/index.php');
     exit;
 }
 
-// Koneksi database
 require_once '../../config/config.php';
 
-// ==================== PENGADUAN STATISTICS ====================
+
 $pengaduan_stats = [];
 $pengaduan_query = "SELECT 
                     COUNT(*) as total,
@@ -35,7 +27,6 @@ if ($result) {
     $pengaduan_stats = $result->fetch_assoc();
 }
 
-// ==================== UMKM STATISTICS ====================
 $umkm_stats = [];
 $umkm_query = "SELECT 
                COUNT(*) as total,
@@ -48,7 +39,6 @@ if ($result) {
     $umkm_stats = $result->fetch_assoc();
 }
 
-// ==================== USER STATISTICS ====================
 $user_stats = [];
 $user_query = "SELECT 
                COUNT(*) as total,
@@ -60,7 +50,6 @@ if ($result) {
     $user_stats = $result->fetch_assoc();
 }
 
-// ==================== PENGADUAN TREND (30 hari) ====================
 $pengaduan_trend = [];
 $trend_query = "SELECT 
                 DATE(created_at) as tanggal,
@@ -76,7 +65,6 @@ if ($result) {
     }
 }
 
-// ==================== RECENT PENGADUAN ====================
 $recent_pengaduan = [];
 $recent_query = "SELECT p.*, u.nama as nama_warga, COUNT(t.id) as jumlah_tanggapan
                  FROM pengaduan p
@@ -92,7 +80,6 @@ if ($result) {
     }
 }
 
-// Fungsi untuk format tanggal
 function format_tanggal($date) {
     $timestamp = strtotime($date);
     $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -100,7 +87,6 @@ function format_tanggal($date) {
     return date('d', $timestamp) . ' ' . $months[$month_index] . ' ' . date('Y H:i', $timestamp);
 }
 
-// Fungsi untuk time ago
 function time_ago($date) {
     $timestamp = strtotime($date);
     $now = time();
@@ -119,7 +105,6 @@ function time_ago($date) {
     }
 }
 
-// Fungsi untuk badge status
 function get_status_badge($status) {
     switch ($status) {
         case 'pending':
@@ -146,7 +131,6 @@ function get_status_badge($status) {
     <?php include '../layouts/admin_sidebar.php'; ?>
     
     <div class="main-content">
-        <!-- Page Header -->
         <div class="page-header">
             <div class="header-content">
                 <h1><i class="bi bi-speedometer2"></i> Dashboard Admin</h1>
@@ -155,10 +139,8 @@ function get_status_badge($status) {
             </div>
         </div>
         
-        <!-- Statistics Cards -->
         <div class="statistics-grid">
             
-            <!-- Pengaduan Card -->
             <div class="stat-card">
                 <div class="stat-icon pengaduan">
                     <i class="bi bi-chat-dots"></i>
@@ -174,7 +156,6 @@ function get_status_badge($status) {
                 </div>
             </div>
             
-            <!-- UMKM Card -->
             <div class="stat-card">
                 <div class="stat-icon umkm">
                     <i class="bi bi-shop"></i>
@@ -189,7 +170,6 @@ function get_status_badge($status) {
                 </div>
             </div>
             
-            <!-- Users Card -->
             <div class="stat-card">
                 <div class="stat-icon users">
                     <i class="bi bi-people"></i>
@@ -204,7 +184,6 @@ function get_status_badge($status) {
                 </div>
             </div>
             
-            <!-- Quick Actions Card -->
             <div class="stat-card">
                 <div class="stat-icon actions">
                     <i class="bi bi-lightning"></i>
@@ -219,7 +198,6 @@ function get_status_badge($status) {
             </div>
         </div>
         
-        <!-- Charts Section -->
         <div class="charts-section">
             <div class="chart-container">
                 <h5>Tren Pengaduan (30 Hari Terakhir)</h5>
@@ -232,7 +210,6 @@ function get_status_badge($status) {
             </div>
         </div>
         
-        <!-- Recent Pengaduan -->
         <div class="recent-section">
             <div class="section-header">
                 <h5>Pengaduan Terbaru</h5>
@@ -310,7 +287,6 @@ function get_status_badge($status) {
         min-height: calc(100vh - 70px);
     }
     
-    /* ==================== PAGE HEADER ==================== */
     .page-header {
         background: linear-gradient(135deg, var(--lampung-blue) 0%, var(--lampung-green) 100%);
         color: white;
@@ -331,7 +307,6 @@ function get_status_badge($status) {
         opacity: 0.95;
     }
     
-    /* ==================== STATISTICS GRID ==================== */
     .statistics-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -419,7 +394,6 @@ function get_status_badge($status) {
         flex-wrap: wrap;
     }
     
-    /* ==================== CHARTS SECTION ==================== */
     .charts-section {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -440,7 +414,6 @@ function get_status_badge($status) {
         font-weight: 700;
     }
     
-    /* ==================== RECENT SECTION ==================== */
     .recent-section {
         background: white;
         border-radius: 12px;
@@ -494,7 +467,6 @@ function get_status_badge($status) {
         display: block;
     }
     
-    /* ==================== RESPONSIVE ==================== */
     @media (max-width: 992px) {
         .main-content {
             margin-left: 0;
@@ -531,9 +503,7 @@ function get_status_badge($status) {
         }
     }
 </style>
-
 <script>
-    // Data untuk chart trend
     const trendData = <?php echo json_encode($pengaduan_trend); ?>;
     const trendLabels = trendData.map(item => {
         const date = new Date(item.tanggal);
@@ -541,7 +511,6 @@ function get_status_badge($status) {
     });
     const trendValues = trendData.map(item => item.jumlah);
     
-    // Trend Chart
     const trendCtx = document.getElementById('trendChart')?.getContext('2d');
     if (trendCtx) {
         new Chart(trendCtx, {
@@ -581,7 +550,6 @@ function get_status_badge($status) {
         });
     }
     
-    // Status Distribution Chart
     const statusCtx = document.getElementById('statusChart')?.getContext('2d');
     if (statusCtx) {
         new Chart(statusCtx, {

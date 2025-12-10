@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if ($_SESSION['role'] !== 'warga') {
-    header('Location: ../index.php');
+    header('Location: ../public/index.php');
     exit;
 }
 
@@ -102,7 +102,7 @@ function get_status_badge($status) {
     <title>Riwayat Pengaduan - LampungSmart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="../../assets/css/lampung-theme.css" rel="stylesheet">
+    <link href="../assets/css/lampung-theme.css" rel="stylesheet">
     
     <style>
         :root {
@@ -428,7 +428,7 @@ function get_status_badge($status) {
     </style>
 </head>
 <body>
-        <?php include '../layouts/header.php'; ?>
+    <?php include '../layouts/header.php'; ?>
     <div class="page-header">
         <div class="container">
             <div class="row align-items-center">
@@ -446,6 +446,7 @@ function get_status_badge($status) {
     </div>
     
     <div class="container">
+        
         <div class="filter-section">
             <form method="GET" class="row g-3">
                 <div class="col-md-6">
@@ -474,13 +475,13 @@ function get_status_badge($status) {
                     <button type="submit" class="btn btn-filter flex-grow-1">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
-                    <a href="pengaduan_list.php" class="btn btn-reset-filter">
+                    <a href="pengaduan_riwayat.php" class="btn btn-reset-filter">
                         <i class="bi bi-arrow-counterclockwise"></i> Reset
                     </a>
                 </div>
             </form>
         </div>
-
+        
         <?php if (count($pengaduan_list) > 0): ?>
             <div class="pengaduan-list">
                 <?php foreach ($pengaduan_list as $pengaduan): ?>
@@ -514,10 +515,9 @@ function get_status_badge($status) {
                         </div>
                         <?php if (!empty($pengaduan['foto'])): ?>
                             <div class="pengaduan-foto">
-                                <img src="../assets/uploads/pengaduan/<?php echo htmlspecialchars($pengaduan['foto']); ?>" alt="Foto Pengaduan">
+                                <img src="../../uploads/pengaduan/<?php echo htmlspecialchars($pengaduan['foto']); ?>" alt="Foto Pengaduan">
                             </div>
                         <?php endif; ?>
-
                         <div class="pengaduan-action">
                             <a href="#" class="btn-detail" onclick="showDetail(<?php echo $pengaduan['id']; ?>); return false;">
                                 <i class="bi bi-eye"></i> Lihat Detail
@@ -533,7 +533,6 @@ function get_status_badge($status) {
                                 </p>
                             <?php endif; ?>
                         </div>
-
                         <?php if ($pengaduan['jumlah_tanggapan'] > 0): ?>
                             <div class="tanggapan-section" data-pengaduan-id="<?php echo $pengaduan['id']; ?>">
                                 <?php 
@@ -569,7 +568,6 @@ function get_status_badge($status) {
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-
             <div class="empty-state">
                 <i class="bi bi-inbox"></i>
                 <h4>Belum Ada Pengaduan</h4>
@@ -597,7 +595,6 @@ function get_status_badge($status) {
                     : 'var(--lampung-blue)';
             }
         }
-        
         function showDetail(id) {
             console.log('Show detail pengaduan:', id);
             alert('Fitur detail akan segera hadir!');

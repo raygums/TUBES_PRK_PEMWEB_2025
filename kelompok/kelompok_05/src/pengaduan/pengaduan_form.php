@@ -1,12 +1,14 @@
 <?php
 
 session_start();
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../auth/login.php');
     exit;
 }
+
 if ($_SESSION['role'] !== 'warga') {
-    header('Location: ../index.php');
+    header('Location: ../public/index.php');
     exit;
 }
 
@@ -28,14 +30,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         die('⚠️ CSRF Token validation failed. Request rejected for security reasons.');
     }
+    
     if ($current_time - $last_submit < $rate_limit_seconds) {
         $error_message = "Mohon tunggu " . ($rate_limit_seconds - ($current_time - $last_submit)) . " detik sebelum mengajukan pengaduan berikutnya.";
     } else {
         $judul = trim($_POST['judul'] ?? '');
         $deskripsi = trim($_POST['deskripsi'] ?? '');
         $lokasi = trim($_POST['lokasi'] ?? '');
-        
+
         $errors = [];
+        
         if (empty($judul)) {
             $errors[] = "Judul pengaduan tidak boleh kosong";
         } elseif (strlen($judul) < 5) {
@@ -115,38 +119,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors[] = "Tipe file harus JPG, PNG, atau GIF (MIME: " . htmlspecialchars($file_type) . ")";
             }
             
-            $file_header = fread(fopen($file_tmp, 'rb'), 12);
-            
+            $file_header = fread(fopen($file_tmp, 'rb'), 12); 
             $is_jpeg = (bin2hex(substr($file_header, 0, 3)) === 'ffd8ff');
             $is_png = (bin2hex(substr($file_header, 0, 8)) === '89504e470d0a1a0a');
-            $is_gif = (substr($file_header, 0, 3) === 'GIF');
-            
+            $is_gif = (substr($file_header, 0, 3) === 'GIF'); 
             if (!($is_jpeg || $is_png || $is_gif)) {
                 $errors[] = "File signature tidak valid. Pastikan file benar-benar gambar.";
             }
-            
             $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
             $allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
             if (!in_array($file_ext, $allowed_ext)) {
                 $errors[] = "Extension file tidak diizinkan. Hanya JPG, PNG, GIF.";
             }
-            
             $dangerous_names = ['php', 'phtml', 'php3', 'php4', 'php5', 'sh', 'exe', 'bat', 'cmd'];
             if (in_array($file_ext, $dangerous_names)) {
                 $errors[] = "Extension file tidak diizinkan untuk keamanan";
             }
             if (empty($errors)) {
-                $upload_dir = '../assets/uploads/pengaduan/';
+                $upload_dir = '../../../uploads/pengaduan/';                
                 if (!is_dir($upload_dir)) {
                     @mkdir($upload_dir, 0755, true);
                 }
-                
-                $random_hash = bin2hex(random_bytes(8)); // 16 character random
+                $random_hash = bin2hex(random_bytes(8));
                 $new_file_name = 'pengaduan_' . (int)$_SESSION['user_id'] . '_' . $random_hash . '.' . $file_ext;
                 $foto_path = $new_file_name;
                 
-                $upload_path = $upload_dir . $new_file_name;
-                
+                $upload_path = $upload_dir . $new_file_name;                
                 if (!move_uploaded_file($file_tmp, $upload_path)) {
                     $errors[] = "Gagal menyimpan file. Mohon coba lagi.";
                 } else {
@@ -161,19 +159,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                           VALUES (?, ?, ?, ?, ?, 'pending')";
                 
                 $stmt = $conn->prepare($query);
-                
                 $user_id = (int)$_SESSION['user_id'];
                 $stmt->bind_param('issss', $user_id, $judul, $deskripsi, $lokasi, $foto_path);
                 
                 if ($stmt->execute()) {
                     $pengaduan_id = $stmt->insert_id;
-                    $success_message = "Pengaduan berhasil diajukan! Nomor ID: " . $pengaduan_id;
-                    
-                    $_SESSION[$rate_limit_key] = $current_time;
-                    
+                    $success_message = "Pengaduan berhasil diajukan! Nomor ID: " . $pengaduan_id;                    
+                    $_SESSION[$rate_limit_key] = $current_time;                    
                     $judul = $deskripsi = $lokasi = '';
-                    $_FILES = [];
-                    
+                    $_FILES = [];                    
                     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
                 } else {
                     $errors[] = "Gagal menyimpan pengaduan. Mohon hubungi support.";
@@ -199,12 +193,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Pengaduan - LampungSmart</title>
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link href="../../assets/css/lampung-theme.css" rel="stylesheet">
+    <link href="../assets/css/lampung-theme.css" rel="stylesheet">
     <style>
         :root {
             --lampung-green: #009639;
@@ -696,7 +688,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
         <?php include '../layouts/header.php'; ?>
-
+    
     <div class="hero-pengaduan">
         <div class="hero-content">
             <i class="fas fa-megaphone hero-icon"></i>
@@ -706,6 +698,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     
     <div class="container-pengaduan">
+        
         <?php if (!empty($success_message)): ?>
             <div class="alert-success-custom">
                 <i class="fas fa-check-circle"></i>
@@ -828,7 +821,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <i class="fas fa-redo"></i> Bersihkan
                         </button>
                     </div>
-                    
                 </div>
             </form>
         </div>
