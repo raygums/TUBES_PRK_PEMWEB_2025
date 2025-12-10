@@ -428,7 +428,7 @@ function get_status_badge($status) {
     </style>
 </head>
 <body>
-    <?php include '../layouts/header.php'; ?>    <!-- Page Header -->
+    <?php include '../layouts/header.php'; ?>
     <div class="page-header">
         <div class="container">
             <div class="row align-items-center">
@@ -447,7 +447,6 @@ function get_status_badge($status) {
     
     <div class="container">
         
-        <!-- Filter Section -->
         <div class="filter-section">
             <form method="GET" class="row g-3">
                 <div class="col-md-6">
@@ -476,7 +475,7 @@ function get_status_badge($status) {
                     <button type="submit" class="btn btn-filter flex-grow-1">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
-                    <a href="pengaduan_list.php" class="btn btn-reset-filter">
+                    <a href="pengaduan_riwayat.php" class="btn btn-reset-filter">
                         <i class="bi bi-arrow-counterclockwise"></i> Reset
                     </a>
                 </div>
