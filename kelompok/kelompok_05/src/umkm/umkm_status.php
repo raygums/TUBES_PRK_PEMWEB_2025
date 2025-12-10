@@ -24,7 +24,7 @@ $result = mysqli_query($conn, $sql);
         <div class='alert alert-info'>
             Anda belum pernah mendaftar UMKM.
         </div>
-        <a href='../frontend/daftar_umkm.php' class='btn btn-primary'>Daftar UMKM Sekarang</a>
+        <a href='daftar_umkm.php' class='btn btn-primary'>Daftar UMKM Sekarang</a>
 
     <?php else: ?>
 
@@ -69,7 +69,7 @@ $result = mysqli_query($conn, $sql);
 
                         <td>
                             <?php if ($status == "rejected"): ?>
-                                <a href="../frontend/daftar_umkm.php" class="btn btn-sm btn-primary">
+                                <a href="daftar_umkm.php" class="btn btn-sm btn-primary">
                                     Ajukan Ulang
                                 </a>
                             <?php elseif ($status == "approved"): ?>

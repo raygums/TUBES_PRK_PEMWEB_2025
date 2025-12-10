@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             
             // Buat folder upload jika belum ada
-            $upload_dir = __DIR__ . '/../../uploads/profile/';
+            $upload_dir = '../assets/uploads/profile/';
             if (!file_exists($upload_dir)) {
                 mkdir($upload_dir, 0755, true);
             }
@@ -212,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Set path foto profil
-$profile_photo_path = '../../uploads/profile/' . ($user['profile_photo'] ?: 'default.jpg');
+$profile_photo_path = '../assets/uploads/profile/' . ($user['profile_photo'] ?: 'default.jpg');
 
 // Calculate profile completeness
 $completeness = 0;
@@ -230,7 +230,7 @@ $activities = [
 ];
 ?>
 <?php
-require __DIR__ . '/layout/header.php';
+require '../layouts/header.php';
 ?>
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -241,7 +241,7 @@ require __DIR__ . '/layout/header.php';
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/css/profile-custom.css">
 <?php
-require __DIR__ . '/layout/sidebar.php';
+require '../layouts/sidebar.php';
 ?>
 
     <!-- Profile Header -->
@@ -251,7 +251,7 @@ require __DIR__ . '/layout/sidebar.php';
                 <img src="<?php echo htmlspecialchars($profile_photo_path); ?>" 
                      alt="Foto Profil" 
                      style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
-                     onerror="this.src='../../uploads/profile/default.jpg'">
+                     onerror="this.src='../assets/uploads/profile/default.jpg'">
                 <span class="profile-photo-badge" style="position: absolute; bottom: 5px; right: 5px; background-color: var(--lampung-green); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
                     <i class="bi bi-check-lg"></i>
                 </span>
@@ -382,7 +382,7 @@ require __DIR__ . '/layout/sidebar.php';
                                              src="<?php echo htmlspecialchars($profile_photo_path); ?>" 
                                              alt="Preview" 
                                              style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--lampung-blue); margin: 15px auto; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"
-                                             onerror="this.src='../../uploads/profile/default.jpg'">
+                                             onerror="this.src='../assets/uploads/profile/default.jpg'">
                                         <p class="small text-muted">Preview Foto Profil</p>
                                     </div>
                                 </div>
@@ -650,5 +650,5 @@ require __DIR__ . '/layout/sidebar.php';
     </script>
 
 <?php
-require __DIR__ . '/layout/footer.php';
+require '../layouts/footer.php';
 ?>
