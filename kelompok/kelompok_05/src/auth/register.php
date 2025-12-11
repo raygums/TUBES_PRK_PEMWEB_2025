@@ -8,7 +8,7 @@ if (isset($_POST['register'])) {
     $nama = mysqli_real_escape_string($conn, $_POST['nama']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = $_POST['password'];
-    $role = 'admin'; 
+    $role = 'warga'; 
 
     $cek_email = mysqli_query($conn, "SELECT email FROM users WHERE email = '$email'");
     if (mysqli_num_rows($cek_email) > 0) {

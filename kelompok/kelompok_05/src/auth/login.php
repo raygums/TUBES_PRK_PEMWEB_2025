@@ -97,7 +97,7 @@ if (isset($_POST['login'])) {
                             <div class="mb-4">
                                 <div class="d-flex justify-content-between">
                                     <label class="form-label">Password</label>
-                                    <a href="#" class="text-decoration-none text-muted text-small" style="font-size: 0.9rem;">Lupa password?</a>
+                                    <a href="forgot_password.php" class="text-decoration-none text-muted text-small" style="font-size: 0.9rem;">Lupa password?</a>
                                 </div>
                                 <input type="password" name="password" class="form-control fw-medium" placeholder="••••••" required>
                             </div>
