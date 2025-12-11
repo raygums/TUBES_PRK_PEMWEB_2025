@@ -11,10 +11,10 @@
                     dalam pelaporan infrastruktur dan perizinan UMKM secara transparan dan efisien.
                 </p>
                 <div class="d-flex gap-3">
-                    <a href="#" class="text-white fs-4" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="text-white fs-4" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
-                    <a href="#" class="text-white fs-4" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="text-white fs-4" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                    <a href="https://web.facebook.com/officialpemprovlampung/" target="_blank" class="text-white fs-4" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="https://x.com/lampung_goid?s=09" target="_blank" class="text-white fs-4" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+                    <a href="https://www.instagram.com/lampungprovgoid/" target="_blank" class="text-white fs-4" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="https://www.youtube.com/channel/UCsSmRQbESAjl8_khALnbGXg" target="_blank" class="text-white fs-4" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
                 </div>
             </div>
             
@@ -43,7 +43,7 @@
                 <ul class="list-unstyled">
                     <li class="mb-2">
                         <i class="bi bi-envelope me-2"></i>
-                        <a href="mailto:admin@lampungsmart.go.id">admin@lampungsmart.go.id</a>
+                        <a href="mailto:a.lampung.smart@gmail.com">a.lampung.smart@gmail.com</a>
                     </li>
                     <li class="mb-2">
                         <i class="bi bi-telephone me-2"></i>
@@ -51,7 +51,7 @@
                     </li>
                     <li class="mb-2">
                         <i class="bi bi-whatsapp me-2"></i>
-                        <a href="https://wa.me/6282112345678">0821-1234-5678</a>
+                        <a href="https://wa.me/6285173271165">085173271165</a>
                     </li>
                     <li class="mb-2">
                         <i class="bi bi-building me-2"></i>
