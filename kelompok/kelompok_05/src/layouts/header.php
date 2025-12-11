@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LampungSmart - Platform Good Governance digital terintegrasi untuk melayani masyarakat Lampung dalam pelaporan infrastruktur dan perizinan UMKM">
+    <meta name="keywords" content="lampung smart, good governance, pengaduan infrastruktur, perizinan umkm, pemerintah lampung">
+    <meta name="author" content="Pemerintah Provinsi Lampung">
+    <title>LampungSmart - Platform Digital Good Governance Provinsi Lampung</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <?php 
+    // Determine CSS path based on current location
+    $css_path = (strpos($_SERVER['PHP_SELF'], 'backend') !== false) ? '../assets/css/' : '../assets/css/';
+    ?>
+    
+    <!-- LampungSmart Theme (Tema Resmi Provinsi Lampung) -->
+    <link href="<?php echo $css_path; ?>lampung-theme.css" rel="stylesheet">
+    
+    <!-- Dashboard Page Custom Styles -->
+    <link href="<?php echo $css_path; ?>dashboard.css" rel="stylesheet">
+    
+    <!-- Landing Page Custom Styles -->
+    <link href="<?php echo $css_path; ?>landing-page.css" rel="stylesheet">
+
+    <!-- Logo Navbar Styles -->
+    <link href="<?php echo $css_path; ?>logo-navbar.css" rel="stylesheet">
+</head>
+<body>
+    <div class="d-flex">
