@@ -46,15 +46,24 @@
         <!-- UMKM Management -->
         <div class="nav-section">
             <div class="nav-section-title">Manajemen UMKM</div>
-            <a href="umkm.php" class="nav-item <?php echo (basename($_SERVER['PHP_SELF']) === 'umkm.php') ? 'active' : ''; ?>">
+
+            <!-- SEMUA UMKM -->
+            <a href="../umkm/admin_umkm.php" 
+            class="nav-item <?php echo (basename($_SERVER['PHP_SELF']) === 'admin_umkm.php' && !isset($_GET['filter'])) ? 'active' : ''; ?>">
                 <i class="bi bi-shop"></i>
                 <span>Daftar UMKM</span>
             </a>
-            <a href="umkm.php?filter=pending" class="nav-item-sub">
+
+            <!-- FILTER PENDING -->
+            <a href="../umkm/admin_umkm.php?filter=pending" 
+            class="nav-item-sub <?php echo (isset($_GET['filter']) && $_GET['filter']=='pending') ? 'active' : ''; ?>">
                 <i class="bi bi-hourglass-split"></i>
                 <span>Pending</span>
             </a>
-            <a href="umkm.php?filter=approved" class="nav-item-sub">
+
+            <!-- FILTER APPROVED -->
+            <a href="../umkm/admin_umkm.php?filter=approved" 
+            class="nav-item-sub <?php echo (isset($_GET['filter']) && $_GET['filter']=='approved') ? 'active' : ''; ?>">
                 <i class="bi bi-check-circle"></i>
                 <span>Approved</span>
             </a>

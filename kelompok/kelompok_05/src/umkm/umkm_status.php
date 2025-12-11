@@ -73,7 +73,10 @@ $result = mysqli_query($conn, $sql);
                                     Ajukan Ulang
                                 </a>
                             <?php elseif ($status == "approved"): ?>
-                                <button class="btn btn-sm btn-success" disabled>Download (Soon)</button>
+                                <a href="umkm_download.php?id=<?= $row['id']; ?>" 
+                                    class="btn btn-sm btn-success" target="_blank">
+                                    Download
+                                </a>
                             <?php else: ?>
                                 <span class="text-muted">Menunggu...</span>
                             <?php endif; ?>
