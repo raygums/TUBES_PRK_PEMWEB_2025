@@ -3,10 +3,10 @@ session_start();
 require '../config/config.php';
 
 // OPTIONAL: aktifkan kembali jika sudah login normal
-// if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-//     header("Location: ../auth/login.php");
-//     exit;
-// }
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../auth/login.php");
+    exit;
+}
 
 if (!isset($_GET['id'])) {
     die("ID UMKM tidak ditemukan.");

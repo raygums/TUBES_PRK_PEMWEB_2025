@@ -2,10 +2,10 @@
 session_start();
 require '../config/config.php';
 
-// OPTIONAL: hidupkan jika login aktif
-// if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-//     die("Akses ditolak!");
-// }
+
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    die("Akses ditolak!");
+}
 
 if (!isset($_GET['id']) || !isset($_GET['action'])) {
     die("Parameter tidak lengkap!");

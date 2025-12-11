@@ -1,16 +1,16 @@
 <?php
-// session_start();
+session_start();
 require '../config/config.php';
 
-// if (!isset($_SESSION['user_id'])) {
-//     header("Location: ../auth/login.php");
-//     exit;
-// }
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../auth/login.php");
+    exit;
+}
 
-// if ($_SESSION['role'] !== 'admin') {
-//     header("Location: ../dashboard/dashboard_warga.php");
-//     exit;
-// }
+if ($_SESSION['role'] !== 'admin') {
+    header("Location: ../dashboard/dashboard_warga.php");
+    exit;
+}
 
 // Filter
 $filter = $_GET['filter'] ?? 'all';
