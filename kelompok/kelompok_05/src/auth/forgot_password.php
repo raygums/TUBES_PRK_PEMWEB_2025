@@ -120,10 +120,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <p class="mb-2 text-muted small"><i class="fas fa-link me-1"></i> Klik link berikut untuk reset password:</p>
                                     <a href="<?php echo $reset_link; ?>"><?php echo $reset_link; ?></a>
                                 </div>
-                                <div class="info-note">
+                                <!-- <div class="info-note">
                                     <i class="fas fa-info-circle me-1"></i>
                                     <strong>Catatan:</strong> Pada implementasi produksi, link ini akan dikirim ke email Anda.
-                                </div>
+                                </div> -->
                             <?php endif; ?>
                         <?php else: ?>
                             <form action="" method="POST">
