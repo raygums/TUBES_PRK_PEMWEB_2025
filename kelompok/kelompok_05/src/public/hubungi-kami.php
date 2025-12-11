@@ -1,37 +1,7 @@
 <?php
-/**
- * LampungSmart - Halaman Hubungi Kami
- * Contact page with form and contact information
- */
-
 session_start();
-
-// Handle form submission
-$success_message = '';
-$error_message = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
-    // Validate input
-    $nama = trim($_POST['nama'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $telepon = trim($_POST['telepon'] ?? '');
-    $subjek = trim($_POST['subjek'] ?? '');
-    $pesan = trim($_POST['pesan'] ?? '');
-    
-    if (empty($nama) || empty($email) || empty($subjek) || empty($pesan)) {
-        $error_message = 'Nama, email, subjek, dan pesan wajib diisi!';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error_message = 'Format email tidak valid!';
-    } else {
-        // TODO: Simpan ke database (tabel contact_messages)
-        // TODO: Kirim email notifikasi ke admin
-        $success_message = 'Pesan Anda telah terkirim! Kami akan menghubungi Anda segera.';
-        
-        // Clear form
-        $nama = $email = $telepon = $subjek = $pesan = '';
-    }
-}
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -50,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
     <link href="../assets/css/lampung-theme.css" rel="stylesheet">
     <link href="../assets/css/landing-page.css" rel="stylesheet">
     <link href="../assets/css/logo-navbar.css" rel="stylesheet">
+    <link href="../assets/css/contact-custom.css" rel="stylesheet">
 </head>
 <body>
 
@@ -165,23 +136,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
                                 </p>
                             </div>
                             
-                            <?php if ($success_message): ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="bi bi-check-circle-fill me-2"></i>
-                                <?php echo htmlspecialchars($success_message); ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
-                            <?php endif; ?>
+                            <!-- Alert Container untuk AJAX Response -->
+                            <div id="alert-container"></div>
                             
-                            <?php if ($error_message): ?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                <?php echo htmlspecialchars($error_message); ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
-                            <?php endif; ?>
-                            
-                            <form method="POST" action="hubungi-kami.php" class="needs-validation" novalidate>
+                            <form id="contactForm" method="POST" class="needs-validation" novalidate>
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label for="nama" class="form-label fw-semibold">
@@ -267,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
                                 </div>
                                 
                                 <div class="d-grid">
-                                    <button type="submit" name="submit_contact" class="btn btn-primary btn-lg">
+                                    <button type="submit" id="submitBtn" name="submit_contact" class="btn btn-primary btn-lg">
                                         <i class="bi bi-send-fill"></i> Kirim Pesan
                                     </button>
                                 </div>
@@ -319,106 +277,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Form Validation -->
+    <!-- AJAX Form Handler -->
     <script>
-        (function () {
-            'use strict'
-            var forms = document.querySelectorAll('.needs-validation')
-            Array.prototype.slice.call(forms).forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-                    form.classList.add('was-validated')
-                }, false)
-            })
-        })()
+        const contactForm = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const alertContainer = document.getElementById('alert-container');
+        
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Validasi form
+            if (!contactForm.checkValidity()) {
+                e.stopPropagation();
+                contactForm.classList.add('was-validated');
+                return;
+            }
+            
+            // Disable button dan tampilkan loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Mengirim...';
+            
+            // Ambil data form
+            const formData = new FormData(contactForm);
+            
+            try {
+                // Kirim via AJAX
+                const response = await fetch('process_contact.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                // Tampilkan alert
+                if (result.success) {
+                    showAlert('success', result.message);
+                    contactForm.reset();
+                    contactForm.classList.remove('was-validated');
+                } else {
+                    showAlert('danger', result.message);
+                }
+            } catch (error) {
+                showAlert('danger', 'Terjadi kesalahan. Silakan coba lagi.');
+            } finally {
+                // Enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="bi bi-send-fill"></i> Kirim Pesan';
+            }
+        });
+        
+        function showAlert(type, message) {
+            const alertHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    <i class="bi bi-${type === 'success' ? 'check-circle-fill' : 'exclamation-triangle-fill'} me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            alertContainer.innerHTML = alertHTML;
+            
+            // Auto dismiss after 5 seconds
+            setTimeout(() => {
+                const alert = alertContainer.querySelector('.alert');
+                if (alert) {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                }
+            }, 5000);
+        };
     </script>
-    
-    <!-- Custom Hover Effects -->
-    <style>
-        /* Card hover animations */
-        .card {
-            transition: all 0.3s ease-in-out;
-        }
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0, 48, 143, 0.15) !important;
-        }
-        
-        /* Icon circle pulse effect */
-        .card:hover .d-inline-flex {
-            animation: pulse-icon 0.6s ease-in-out;
-        }
-        @keyframes pulse-icon {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        /* Icon rotation on hover */
-        .card:hover i {
-            animation: rotate-icon 0.5s ease-in-out;
-        }
-        @keyframes rotate-icon {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Form input focus effects */
-        .form-control:focus, .form-select:focus, textarea:focus {
-            border-color: var(--lampung-blue) !important;
-            box-shadow: 0 0 0 0.25rem rgba(0, 48, 143, 0.15) !important;
-            transform: translateY(-2px);
-            transition: all 0.3s ease-in-out;
-        }
-        
-        /* Button hover effects */
-        .btn {
-            transition: all 0.3s ease-in-out;
-        }
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 48, 143, 0.2);
-        }
-        
-        /* Social media links hover */
-        .d-flex a {
-            transition: all 0.3s ease-in-out;
-        }
-        .d-flex a:hover {
-            transform: scale(1.3) rotate(5deg);
-        }
-        
-        /* Footer links hover */
-        footer a {
-            transition: all 0.3s ease-in-out;
-        }
-        footer a:hover {
-            color: var(--lampung-gold) !important;
-            transform: translateX(5px);
-            display: inline-block;
-        }
-        
-        /* Social media icons hover */
-        footer .d-flex a {
-            transition: all 0.3s ease-in-out;
-        }
-        footer .d-flex a:hover {
-            transform: translateY(-3px) scale(1.2);
-            color: var(--lampung-gold) !important;
-        }
-        
-        /* Working hours card border animation */
-        .border-lampung-blue {
-            transition: all 0.3s ease-in-out;
-        }
-        .border-lampung-blue:hover {
-            border-width: 3px !important;
-            box-shadow: 0 8px 16px rgba(0, 48, 143, 0.2);
-            transform: scale(1.02);
-        }
-    </style>
 
 </body>
 </html>
