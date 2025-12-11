@@ -8,15 +8,15 @@ return [
     'smtp_auth' => true,                          // Enable SMTP authentication
     
     // Email Credentials
-    'smtp_username' => 'sulton843@gmail.com',    // Email pengirim
-    'smtp_password' => 'auxn xbox mguc auvz',       // App Password (bukan password biasa)
+    'smtp_username' => 'a.lampung.smart@gmail.com',    // Email pengirim
+    'smtp_password' => 'lpsc ztzs vdnu awki',       // App Password (bukan password biasa)
     
     // Sender Info
-    'from_email' => 'noreply@lampungsmart.go.id', // Email pengirim yang ditampilkan
+    'from_email' => 'noreply@a.lampung.smart', // Email pengirim yang ditampilkan
     'from_name' => 'LampungSmart System',         // Nama pengirim
     
     // Admin Email
-    'admin_email' => 'sulton843@gmail.com',       // Email admin penerima
+    'admin_email' => 'a.lampung.smart@gmail.com',       // Email admin penerima
     'admin_name' => 'LampungSmart System',                     // Nama admin
     
     // SMTP Debug (0 = off, 1 = client, 2 = client + server)
