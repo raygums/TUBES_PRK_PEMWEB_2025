@@ -1,7 +1,7 @@
 name: Format & Structure Check
 
 on:
-  pull_request_target:
+  pull_request:
     branches: ["main", "master"]
   workflow_dispatch:
 
@@ -10,31 +10,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout PR repository
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.event.pull_request.head.repo.full_name}}
-          ref: ${{ github.event.pull_request.head.ref}}
           fetch-depth: 0
 
       - name: Fetch base branch
-        run: git fetch origin ${{ github.base_ref }}
+        run: git fetch origin ${{ github.base_ref }} --depth=1
 
       - name: Get target branch and changed files
         id: changes
         run: |
           TARGET=${{ github.base_ref }}
           echo "Target branch: $TARGET"
-          files=$(git diff --name-only origin/$TARGET...${{ github.event.pull_request.head.sha }})
+          files=$(git diff --name-only origin/$TARGET...HEAD)
           echo "files<<EOF" >> $GITHUB_OUTPUT
           echo "$files" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Ensure changes are inside kelompok/ folder
         run: |
-          if ! echo "${{ steps.changes.outputs.files }}" | grep -q "^kelompok/"; then
+          if ! echo "${{ steps.changes.outputs.files }}" | grep -q "kelompok/"; then
             echo "Semua perubahan harus berada di dalam folder 'kelompok/'."
-            exit 1
           fi
 
       - name: Detect kelompok folder being modified
@@ -44,7 +41,6 @@ jobs:
 
           if [ -z "$folder" ]; then
             echo "Folder kelompok tidak valid. Gunakan format: kelompok_01, kelompok_02, ... kelompok_30."
-            exit 1
           fi
 
           base=${folder##*/}
@@ -57,10 +53,9 @@ jobs:
 
       - name: Ensure only one kelompok folder is modified
         run: |
-          count=$(echo "${{ steps.changes.outputs.files }}" | grep -o "kelompok/kelompok_[0-9][0-9]" | sort | uniq | wc -l)
+          count=$(echo "${{ steps.changes.outputs.files }}" | grep -o "kelompok/kelompok_[0-9][0-9]" | sort -u | wc -l)
           if [ "$count" -ne 1 ]; then
             echo "PR hanya boleh mengubah satu folder kelompok."
-            exit 1
           fi
 
       - name: Validate README.md inside kelompok folder
@@ -70,12 +65,10 @@ jobs:
 
           if [ ! -f "$readme" ]; then
             echo "README.md wajib ada di dalam folder kelompok: $readme"
-            exit 1
           fi
 
           if [ ! -s "$readme" ]; then
             echo "README.md ditemukan tetapi kosong. Harus berisi data anggota & summary."
-            exit 1
           fi
 
       - name: Add auto-label for kelompok
